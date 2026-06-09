@@ -1,0 +1,64 @@
+{
+  "run_id": "20260608_152710",
+  "summary": {
+    "run_id": "20260608_152710",
+    "total": 1,
+    "generated": 1,
+    "exact_match": 1.0,
+    "token_recall": 1.0,
+    "article_cited": 1.0,
+    "hallucination_rate": 0.0,
+    "confident_no_source": 0.0,
+    "keyword_hit_rate": 0.0,
+    "avg_latency_s": 10.026,
+    "by_tier": {
+      "tier_2": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0,
+        "article_cited": 1.0,
+        "hallucination": 0.0,
+        "avg_latency_s": 10.026
+      }
+    },
+    "by_cat": {
+      "cat_6": {
+        "n": 1,
+        "label": "Temporel/Transitoire",
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      }
+    },
+    "by_type": {
+      "délai_réclamation": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      }
+    },
+    "failures": []
+  },
+  "results": [
+    {
+      "id": "q23",
+      "tier": 2,
+      "cat": 6,
+      "type": "délai_réclamation",
+      "question": "Quel est le délai dont dispose un contribuable pour contester un impôt mis en recouvrement par voie de rôle ?",
+      "expected": "six mois",
+      "expected_article": "article 235",
+      "response": "Six (6) mois suivant la date de mise en recouvrement du rôle, conformément à l'article 235-b du CGI.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 10.026,
+      "articles_detected": [
+        "235"
+      ]
+    }
+  ]
+}

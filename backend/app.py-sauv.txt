@@ -1,0 +1,695 @@
+#ceci est la version 2 qui marche impecable !
+import os
+import json
+import uuid
+import math
+import re
+import threading
+import tempfile
+from flask import Flask, request, jsonify, Response, stream_with_context
+from flask_cors import CORS
+from dotenv import load_dotenv
+import groq
+
+load_dotenv(override=True)
+USE_HYDE = False
+
+app = Flask(__name__)
+CORS(app)
+
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+groq_client = groq.Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
+
+ingestion_status = {}
+
+# ── Qdrant ─────────────────────────────────────────────────────────────────────
+from qdrant_client import QdrantClient
+from qdrant_client.models import (
+    Distance, VectorParams, PointStruct,
+    Filter, FieldCondition, MatchValue
+)
+
+QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
+COLLECTION = "rag_docs"
+DENSE_DIM  = 384  # E5-small
+
+qdrant = QdrantClient(url=QDRANT_URL, timeout=30)
+
+def ensure_collection(recreate=False):
+    existing = [c.name for c in qdrant.get_collections().collections]
+    if recreate and COLLECTION in existing:
+        qdrant.delete_collection(COLLECTION)
+        print(f"🗑 Collection '{COLLECTION}' supprimée")
+        existing = []
+    if COLLECTION not in existing:
+        qdrant.create_collection(
+            collection_name=COLLECTION,
+            vectors_config=VectorParams(size=DENSE_DIM, distance=Distance.COSINE)
+        )
+        print(f"✅ Collection '{COLLECTION}' créée (dim={DENSE_DIM})")
+    else:
+        # Vérifie la dimension — si c'est l'ancienne collection dim=1, recrée
+        info = qdrant.get_collection(COLLECTION)
+        actual_dim = info.config.params.vectors.size
+        if actual_dim != DENSE_DIM:
+            print(f"⚠ Dimension incorrecte ({actual_dim} vs {DENSE_DIM}) — recréation...")
+            qdrant.delete_collection(COLLECTION)
+            qdrant.create_collection(
+                collection_name=COLLECTION,
+                vectors_config=VectorParams(size=DENSE_DIM, distance=Distance.COSINE)
+            )
+            print(f"✅ Collection '{COLLECTION}' recréée (dim={DENSE_DIM})")
+        else:
+            print(f"✅ Collection '{COLLECTION}' existante (dim={actual_dim})")
+
+try:
+    ensure_collection()
+except Exception as e:
+    print(f"⚠ Qdrant non accessible: {e}")
+    print("  Lance: docker run -d -p 6333:6333 qdrant/qdrant")
+
+# ── E5-small — chargé une seule fois au démarrage ─────────────────────────────
+print("⏳ Chargement E5-small...")
+from sentence_transformers import SentenceTransformer
+e5_model = SentenceTransformer("intfloat/multilingual-e5-small")
+print("✅ E5-small prêt")
+
+def embed_query(text: str) -> list[float]:
+    """Embed une query — préfixe 'query:' requis par E5."""
+    vec = e5_model.encode(f"query: {text}", normalize_embeddings=True)
+    return vec.tolist()
+
+def embed_passages(texts: list[str]) -> list[list[float]]:
+    """Embed une liste de chunks — préfixe 'passage:' requis par E5."""
+    prefixed = [f"passage: {t}" for t in texts]
+    vecs = e5_model.encode(prefixed, normalize_embeddings=True, batch_size=32, show_progress_bar=False)
+    return vecs.tolist()
+
+# ── PDF Parsing ────────────────────────────────────────────────────────────────
+def parse_pdf(filepath):
+    import fitz
+    doc = fitz.open(filepath)
+    pages = []
+    for i, page in enumerate(doc):
+        text   = page.get_text("text")
+        blocks = page.get_text("blocks")
+        tables = extract_table_like_blocks(blocks)
+        pages.append({
+            "page":       i + 1,
+            "text":       text,
+            "tables":     tables,
+            "char_count": len(text.strip())
+        })
+    doc.close()
+    return pages
+
+def extract_table_like_blocks(blocks):
+    tables = []
+    for b in blocks:
+        if b[6] == 0:
+            text  = b[4]
+            lines = [l.strip() for l in text.split("\n") if l.strip()]
+            numeric_lines = sum(1 for l in lines if re.search(r'\d+[\s,\.]\d*', l))
+            if len(lines) >= 3 and numeric_lines >= 2:
+                tables.append(text)
+    return tables
+
+def detect_pdf_quality(pages):
+    total = sum(p["char_count"] for p in pages)
+    return "selectable" if total > 200 else "scanned"
+
+# ── Classifier — détection par mots-clés d'abord, LLM en fallback ────────────
+KEYWORD_RULES = [
+    ("code_fiscal", [
+        "code général des impôts", "code des impôts", "code douanier",
+        "code du travail", "code de commerce", "dahir portant loi",
+        "livre premier", "livre deuxième", "titre premier", "titre ii",
+        "article 1er", "article premier",
+    ]),
+    ("circulaire", ["circulaire n°", "note circulaire", "note de service", "direction générale des impôts"]),
+    ("declaration_tva", ["déclaration de la tva", "taxe sur la valeur ajoutée", "déclaration tva", "formulaire tva"]),
+    ("declaration_is", ["déclaration de l'impôt sur les sociétés", "déclaration is", "formulaire is"]),
+    ("bilan", ["bilan comptable", "compte de résultat", "état des soldes", "bilan de clôture", "actif immobilisé"]),
+    ("contrat", ["entre les soussignés", "il a été convenu", "contrat de", "entre les parties"]),
+    ("facture", ["facture n°", "facture pro forma", "bon de commande", "montant ttc", "montant ht"]),
+]
+
+def keyword_classify(pages) -> str | None:
+    """Détection rapide par mots-clés sur les 5 premières pages — zéro LLM."""
+    sample = " ".join(p["text"][:500] for p in pages[:5]).lower()
+    for doc_type, keywords in KEYWORD_RULES:
+        if any(kw in sample for kw in keywords):
+            return doc_type
+    return None
+
+def classify_document(pages):
+    # 1. Détection rapide par mots-clés (instantané, zéro token)
+    detected = keyword_classify(pages)
+    if detected:
+        print(f"🔍 Classification par mots-clés: {detected}")
+        return {"type": detected, "langue": "fr", "exercice": None, "societe": None, "description": ""}
+
+    if not groq_client:
+        return {"type": "autre", "langue": "fr", "exercice": None, "societe": None, "description": ""}
+
+    # 2. Fallback LLM si mots-clés ne suffisent pas
+    sample = ""
+    for p in pages[:3]:
+        sample += p["text"][:300]
+        if len(sample) > 800:
+            break
+
+    prompt = (
+        "Analyse ce début de document. Retourne UNIQUEMENT un JSON valide, zéro markdown.\n"
+        'Champs: type ("declaration_tva"|"declaration_is"|"bilan"|"contrat"|"rapport_audit"|"facture"|"code_fiscal"|"circulaire"|"note_circulaire"|"autre"), '
+        'langue ("fr"|"ar"|"en"|"mixed"), exercice (string année ou null), '
+        'societe (string ou null), description (1 phrase courte).\n'
+        'code_fiscal = tout code de loi structuré par articles (CGI, code douanier, code travail...).\n'
+        'circulaire/note_circulaire = instructions fiscales/administratives structurées par articles ou paragraphes.\n\n'
+        f"Document:\n{sample[:800]}"
+    )
+
+    try:
+        resp = groq_client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=150,
+            temperature=0.0
+        )
+        raw = re.sub(r"```json|```", "", resp.choices[0].message.content.strip()).strip()
+        result = json.loads(raw)
+        print(f"🔍 Classification résultat: {result}")
+        return result
+    except Exception as e:
+        print(f"Classifier error: {e}")
+        return {"type": "autre", "langue": "fr", "exercice": None, "societe": None, "description": ""}
+
+# ── Adaptive Chunker ───────────────────────────────────────────────────────────
+def chunk_document(pages, doc_meta):
+    t = doc_meta.get("type", "autre")
+    if t in ("declaration_tva", "declaration_is"):
+        chunks = chunk_fiscal(pages, doc_meta)
+    elif t == "bilan":
+        chunks = chunk_bilan(pages, doc_meta)
+    elif t in ("contrat", "code_fiscal", "circulaire", "note_circulaire"):
+        chunks = chunk_by_article(pages, doc_meta)
+    else:
+        chunks = chunk_generic(pages, doc_meta)
+    # Fallback: si chunking spécialisé produit trop peu de chunks, générique
+    if len(chunks) < 3:
+        chunks = chunk_generic(pages, doc_meta)
+    return chunks
+
+def _make_chunk(text, meta, index, section):
+    return {"chunk_id": str(uuid.uuid4()), "chunk_text": text,
+            "chunk_index": index, "section": section, **meta}
+
+def chunk_by_article(pages, meta):
+    """
+    Chunking universel pour tout document structuré par articles/clauses/paragraphes.
+    Couvre: CGI, codes fiscaux, contrats, circulaires, notes de service.
+    Chaque chunk = 1 article complet. Si trop long → sliding window sur l'article.
+    Le titre de l'article est préservé dans chaque sous-chunk (contexte).
+    """
+    full = "\n".join(p["text"] for p in pages)
+
+    # Pattern universel : Article N, ARTICLE N, Art. N, Clause N, § N, I- II- A- B-
+    split_pattern = r'(?=(?:(?:Article|ARTICLE|Art\.)\s*\.?\s*\d+|Clause\s+\d+|§\s*\d+|\n\s*[IVX]+[\.-]\s|\n\s*[A-Z][\.-]\s))' 
+
+    parts = re.split(split_pattern, full)
+
+    chunks = []
+    for i, part in enumerate(parts):
+        part = part.strip()
+        if len(part) < 40:
+            continue
+
+        title = extract_section_title(part)
+        words = part.split()
+
+        if len(words) <= 600:
+            # Article court → chunk unique
+            chunks.append(_make_chunk(part, meta, i, title))
+        else:
+            # Article long → sliding window avec titre répété pour le contexte
+            for j, sc in enumerate(sliding_window(part, 500, 80)):
+                # Préfixer chaque sous-chunk avec le titre de l'article
+                contextualized = f"{title}\n{sc}" if j > 0 else sc
+                chunks.append(_make_chunk(contextualized, meta, i*100+j, title))
+
+    return chunks if len(chunks) >= 3 else chunk_generic(pages, meta)
+
+def chunk_fiscal(pages, meta):
+    patterns = [
+        r"TVA\s+collect[eé]e", r"TVA\s+d[eé]ductible", r"Base\s+imposable",
+        r"Chiffre\s+d.affaires", r"Article\s+\d+",
+        r"(?:Section|Chapitre|Titre)\s+[IVX\d]+"
+    ]
+    full = "".join(f"\n[Page {p['page']}]\n{p['text']}" for p in pages)
+    parts = re.split(r'(?=(?:' + '|'.join(patterns) + r'))', full, flags=re.MULTILINE)
+    chunks = []
+    for i, part in enumerate(parts):
+        part = part.strip()
+        if len(part) < 50:
+            continue
+        for j, sc in enumerate(sliding_window(part, 600, 100)):
+            chunks.append(_make_chunk(sc, meta, i*100+j, extract_section_title(part)))
+    return chunks or chunk_generic(pages, meta)
+
+def chunk_bilan(pages, meta):
+    kw = ["ACTIF","PASSIF","CAPITAUX PROPRES","DETTES","IMMOBILISATIONS",
+          "STOCKS","CRÉANCES","TRÉSORERIE","RÉSULTAT"]
+    full  = "\n".join(p["text"] for p in pages)
+    parts = re.split(r'(?=(?:' + '|'.join(kw) + r'))', full)
+    chunks = []
+    for i, part in enumerate(parts):
+        part = part.strip()
+        if len(part) < 30:
+            continue
+        for j, sc in enumerate(sliding_window(part, 500, 80)):
+            chunks.append(_make_chunk(sc, meta, i*100+j, part[:60]))
+    return chunks or chunk_generic(pages, meta)
+
+def chunk_contrat(pages, meta):
+    full  = "\n".join(p["text"] for p in pages)
+    parts = re.split(r'(?=(?:Article\s+\d+|ARTICLE\s+\d+|Clause\s+\d+|§\s*\d+))', full)
+    chunks = []
+    for i, part in enumerate(parts):
+        part = part.strip()
+        if len(part) < 40:
+            continue
+        for j, sc in enumerate(sliding_window(part, 700, 100)):
+            chunks.append(_make_chunk(sc, meta, i*100+j, extract_section_title(part)))
+    return chunks or chunk_generic(pages, meta)
+
+def chunk_generic(pages, meta):
+    full   = "\n".join(p["text"] for p in pages)
+    chunks = []
+    for i, sc in enumerate(sliding_window(full, 600, 120)):
+        if len(sc.strip()) < 30:
+            continue
+        chunks.append(_make_chunk(sc, meta, i, f"Section {i+1}"))
+    return chunks
+
+def sliding_window(text, size=600, overlap=100):
+    words = text.split()
+    step  = max(1, size - overlap)
+    return [" ".join(words[i:i+size]) for i in range(0, len(words), step) if words[i:i+size]]
+
+def extract_section_title(text):
+    line = text.strip().split("\n")[0]
+    return line[:80] if line else "Section"
+
+# ── BM25 ───────────────────────────────────────────────────────────────────────
+def tokenize(text):
+    return re.findall(r'\b\w+\b', text.lower())
+
+def bm25_score(query_tokens, doc_tokens, corpus_size, avg_dl, k1=1.5, b=0.75):
+    dl   = len(doc_tokens)
+    freq = {}
+    for t in doc_tokens:
+        freq[t] = freq.get(t, 0) + 1
+    score = 0.0
+    for qt in query_tokens:
+        f = freq.get(qt, 0)
+        if f == 0:
+            continue
+        idf    = math.log(1 + (corpus_size - f + 0.5) / (f + 0.5))
+        score += idf * (f * (k1 + 1)) / (f + k1 * (1 - b + b * dl / max(avg_dl, 1)))
+    return score
+
+# ── Scroll Qdrant → liste de chunks ───────────────────────────────────────────
+def get_all_chunks(doc_filter=None):
+    qdrant_filter = None
+    if doc_filter:
+        conditions    = [FieldCondition(key=f"metadata.{k}", match=MatchValue(value=v))
+                         for k, v in doc_filter.items()]
+        qdrant_filter = Filter(must=conditions)
+
+    chunks = []
+    offset = None
+    while True:
+        result, offset = qdrant.scroll(
+            collection_name=COLLECTION,
+            limit=100,
+            offset=offset,
+            scroll_filter=qdrant_filter,
+            with_payload=True,
+            with_vectors=False
+        )
+        for point in result:
+            p = point.payload
+            chunks.append({
+                "chunk_id":    p.get("chunk_id"),
+                "chunk_text":  p.get("chunk_text", ""),
+                "section":     p.get("section", ""),
+                "chunk_index": p.get("chunk_index", 0),
+                "metadata":    p.get("metadata", {})
+            })
+        if offset is None:
+            break
+    return chunks
+
+# ── RRF fusion ─────────────────────────────────────────────────────────────────
+def rrf_fusion(bm25_results, vector_results, bm25_weight=1.5, k=60):
+    """
+    Fusionne deux listes rankées via RRF.
+    bm25_weight > 1 rend BM25 dominant.
+    score = bm25_weight * 1/(rank_bm25+k)  +  1*(1/(rank_vec+k))
+    """
+    scores = {}
+
+    for rank, chunk in enumerate(bm25_results):
+        cid = chunk["chunk_id"]
+        scores[cid] = scores.get(cid, {"chunk": chunk, "score": 0.0})
+        scores[cid]["score"] += bm25_weight * (1.0 / (rank + k))
+
+    for rank, chunk in enumerate(vector_results):
+        cid = chunk["chunk_id"]
+        if cid not in scores:
+            scores[cid] = {"chunk": chunk, "score": 0.0}
+        scores[cid]["score"] += 1.0 * (1.0 / (rank + k))
+
+    fused = sorted(scores.values(), key=lambda x: x["score"], reverse=True)
+    return [item["chunk"] for item in fused]
+
+# ── HyDE — reformulation query en langage juridique fiscal ───────────────────
+def hyde_rewrite(query: str) -> str:
+    """
+    Reformule la question en termes juridiques/fiscaux marocains via llama-3.1-8b.
+    Cheap : ~50 tokens input, ~40 tokens output.
+    Fallback sur query originale si erreur.
+    """
+    if not groq_client:
+        return query
+    try:
+        resp = groq_client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[{
+                "role": "user",
+                "content": (
+                    "Tu es un expert en fiscalité marocaine. "
+                    "Reformule cette question en utilisant uniquement les termes juridiques et fiscaux "
+                    "exacts tels qu'ils apparaissent dans le Code Général des Impôts marocain. "
+                    "Retourne UNIQUEMENT la reformulation, sans explication, sans ponctuation finale.\n\n"
+                    f"Question : {query}"
+                )
+            }],
+            max_tokens=60,
+            temperature=0.0
+        )
+        rewritten = resp.choices[0].message.content.strip()
+        print(f"🔄 HyDE: '{query}' → '{rewritten}'")
+        return rewritten
+    except Exception as e:
+        print(f"HyDE error: {e}")
+        return query
+
+# ── Retrieval hybride BM25 + E5-small → RRF ───────────────────────────────────
+def retrieve_chunks(query, doc_filter=None, top_k=5):
+    # HyDE : reformule en termes juridiques pour améliorer BM25 + E5 sur questions naturelles
+    search_query = hyde_rewrite(query) if USE_HYDE else query
+
+    # ── Canal 1 : BM25 ────────────────────────────────────────────────────────
+    all_chunks = []
+    try:
+        all_chunks = get_all_chunks(doc_filter)
+    except Exception as e:
+        print(f"Scroll error: {e}")
+
+    bm25_top20 = []
+    if all_chunks:
+        query_tokens = tokenize(search_query)
+        avg_dl       = sum(len(tokenize(c["chunk_text"])) for c in all_chunks) / len(all_chunks)
+        corpus_size  = len(all_chunks)
+
+        scored = []
+        for chunk in all_chunks:
+            doc_tokens = tokenize(chunk["chunk_text"])
+            score      = bm25_score(query_tokens, doc_tokens, corpus_size, avg_dl)
+            if search_query.lower() in chunk["chunk_text"].lower():
+                score *= 2.0
+            scored.append((score, chunk))
+
+        scored.sort(key=lambda x: x[0], reverse=True)
+        bm25_top20 = [c for _, c in scored[:20]]
+
+    # ── Canal 2 : Vector search E5-small ──────────────────────────────────────
+    vector_top20 = []
+    try:
+        qdrant_filter = None
+        if doc_filter:
+            conditions    = [FieldCondition(key=f"metadata.{k}", match=MatchValue(value=v))
+                             for k, v in doc_filter.items()]
+            qdrant_filter = Filter(must=conditions)
+
+        query_vec = embed_query(search_query)
+        results = qdrant.query_points(
+            collection_name=COLLECTION,
+            query=query_vec,
+            query_filter=qdrant_filter,
+            limit=20,
+            with_payload=True
+        )
+        for r in results.points:
+            p = r.payload
+            vector_top20.append({
+                "chunk_id":   p.get("chunk_id"),
+                "chunk_text": p.get("chunk_text", ""),
+                "section":    p.get("section", ""),
+                "metadata":   p.get("metadata", {})
+            })
+    except Exception as e:
+        print(f"Vector search error: {e}")
+
+    # ── Debug logs ────────────────────────────────────────────────────────────
+    print("=== BM25 TOP 5 ===")
+    for i, c in enumerate(bm25_top20[:5]):
+        print(f"  {i+1}. [{c.get('section','?')}] {c['chunk_text'][:100]}")
+    print("=== VECTOR TOP 5 ===")
+    for i, c in enumerate(vector_top20[:5]):
+        print(f"  {i+1}. [{c.get('section','?')}] {c['chunk_text'][:100]}")
+
+    # ── Si un seul canal disponible, fallback sur lui ──────────────────────────
+    if not bm25_top20 and not vector_top20:
+        return []
+    if not vector_top20:
+        return bm25_top20[:top_k]
+    if not bm25_top20:
+        return vector_top20[:top_k]
+
+    # ── RRF fusion (BM25 pondéré ×1.5) ────────────────────────────────────────
+    fused = rrf_fusion(bm25_top20, vector_top20, bm25_weight=1.5)
+    print("=== FUSED TOP 5 ===")
+    for i, c in enumerate(fused[:5]):
+        print(f"  {i+1}. [{c.get('section','?')}] {c['chunk_text'][:100]}")
+    return fused[:top_k]
+
+# ── Ingestion ──────────────────────────────────────────────────────────────────
+@app.route("/ingest", methods=["POST"])
+def ingest():
+    if "file" not in request.files:
+        return jsonify({"error": "No file"}), 400
+
+    file      = request.files["file"]
+    doc_id    = str(uuid.uuid4())
+    tmp_dir   = tempfile.gettempdir()
+    tmp_path  = os.path.join(tmp_dir, f"{doc_id}.pdf")
+    file.save(tmp_path)
+    filename  = file.filename
+
+    ingestion_status[doc_id] = {"status": "processing", "steps": [], "doc_id": doc_id}
+
+    def process():
+        try:
+            # 1. Parse
+            ingestion_status[doc_id]["steps"].append("📄 Parsing du PDF...")
+            pages   = parse_pdf(tmp_path)
+            quality = detect_pdf_quality(pages)
+            ingestion_status[doc_id]["steps"].append(
+                f"✅ PDF parsé — qualité: {quality} ({len(pages)} pages)")
+
+            # 2. Classify (8B — rapide)
+            ingestion_status[doc_id]["steps"].append("🔍 Classification (llama-3.1-8b)...")
+            doc_meta             = classify_document(pages)
+            doc_meta["doc_id"]   = doc_id
+            doc_meta["filename"] = filename
+            ingestion_status[doc_id]["steps"].append(
+                f"✅ Type: {doc_meta.get('type','?')} | Langue: {doc_meta.get('langue','?')} | Exercice: {doc_meta.get('exercice','N/A')}")
+
+            # 3. Chunk adaptatif
+            ingestion_status[doc_id]["steps"].append("✂️ Chunking adaptatif...")
+            chunks = chunk_document(pages, doc_meta)
+            ingestion_status[doc_id]["steps"].append(
+                f"✅ {len(chunks)} chunks (stratégie: {doc_meta.get('type','générique')})")
+
+            # 4. Embed tous les chunks en batch (E5-small, one-shot)
+            ingestion_status[doc_id]["steps"].append(
+                f"🧠 Embedding E5-small ({len(chunks)} chunks)...")
+            texts  = [c["chunk_text"] for c in chunks]
+            vecs   = embed_passages(texts)
+            ingestion_status[doc_id]["steps"].append("✅ Embeddings calculés")
+
+            # 5. Upsert Qdrant — texte + metadata + vecteur E5
+            ingestion_status[doc_id]["steps"].append("📦 Indexation Qdrant...")
+            points = [
+                PointStruct(
+                    id     = chunk["chunk_id"],
+                    vector = vecs[i],
+                    payload= {
+                        "chunk_id":    chunk["chunk_id"],
+                        "chunk_text":  chunk["chunk_text"],
+                        "section":     chunk.get("section", ""),
+                        "chunk_index": chunk.get("chunk_index", 0),
+                        "metadata":    doc_meta
+                    }
+                )
+                for i, chunk in enumerate(chunks)
+            ]
+
+            for i in range(0, len(points), 64):
+                qdrant.upsert(collection_name=COLLECTION, points=points[i:i+64])
+
+            total = qdrant.count(collection_name=COLLECTION).count
+            ingestion_status[doc_id]["steps"].append(
+                f"✅ Indexé dans Qdrant ({len(chunks)} chunks · {total} total)")
+
+            ingestion_status[doc_id]["status"]      = "done"
+            ingestion_status[doc_id]["doc_meta"]    = doc_meta
+            ingestion_status[doc_id]["chunk_count"] = len(chunks)
+
+        except Exception as e:
+            ingestion_status[doc_id]["status"] = "error"
+            ingestion_status[doc_id]["error"]  = str(e)
+            print(f"Ingestion error: {e}")
+        finally:
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
+
+    threading.Thread(target=process).start()
+    return jsonify({"doc_id": doc_id, "status": "processing"})
+
+@app.route("/ingest/status/<doc_id>", methods=["GET"])
+def ingest_status(doc_id):
+    s = ingestion_status.get(doc_id)
+    if not s:
+        return jsonify({"error": "Not found"}), 404
+    return jsonify(s)
+
+# ── Chat ───────────────────────────────────────────────────────────────────────
+SYSTEM_PROMPT = """Tu es un assistant expert en audit fiscal, comptable et juridique, spécialisé en droit marocain.
+Tu analyses des documents uploadés par l'utilisateur (déclarations TVA, IS, bilans, contrats, etc.).
+
+RÈGLES STRICTES :
+- Utilise UNIQUEMENT les informations présentes dans le contexte
+- INTERDICTION d’utiliser des connaissances externes
+- Si la réponse n’est pas explicitement dans le contexte, réponds : "Information non présente dans les documents"
+- Ne fais aucune supposition ou généralisation
+
+- Cite uniquement les articles explicitement présents dans le contexte
+- Si aucun article n’est mentionné, ne les invente pas
+
+- Réponse maximum 5 phrases
+- Réponse concise et factuelle"""
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    data       = request.json
+    query      = data.get("query", "").strip()
+    history    = data.get("history", [])
+    doc_filter = data.get("doc_filter")
+
+    if not query:
+        return jsonify({"error": "Empty query"}), 400
+
+    chunks = retrieve_chunks(query, doc_filter, top_k=10)
+
+    if not chunks:
+        context = "Aucun document indexé ou aucun résultat pertinent trouvé."
+    else:
+        context = "\n\n---\n\n".join([
+            f"[{c['metadata'].get('type','?')} | {c['metadata'].get('filename','?')} | {c.get('section','')}]\n{c['chunk_text']}"
+            for c in chunks
+        ])
+
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+
+    # Historique réduit : 3 derniers échanges
+    for h in history[-3:]:
+        messages.append({"role": h["role"], "content": h["content"]})
+
+    messages.append({
+        "role": "user",
+        "content": f"CONTEXTE DOCUMENTAIRE :\n{context}\n\nQUESTION : {query}"
+    })
+
+    def generate():
+        if not groq_client:
+            yield f"data: {json.dumps({'content': 'Erreur: GROQ_API_KEY manquante'})}\n\n"
+            yield "data: [DONE]\n\n"
+            return
+        try:
+            stream = groq_client.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=messages,
+                max_tokens=800,
+                temperature=0.1,
+                stream=True
+            )
+            for chunk in stream:
+                delta = chunk.choices[0].delta
+                if delta.content:
+                    yield f"data: {json.dumps({'content': delta.content})}\n\n"
+            yield "data: [DONE]\n\n"
+        except Exception as e:
+            yield f"data: {json.dumps({'content': f'Erreur LLM: {str(e)}'})}\n\n"
+            yield "data: [DONE]\n\n"
+
+    return Response(stream_with_context(generate()), mimetype="text/event-stream",
+                    headers={"X-Accel-Buffering": "no", "Cache-Control": "no-cache"})
+
+# ── Documents list ─────────────────────────────────────────────────────────────
+@app.route("/documents", methods=["GET"])
+def list_documents():
+    try:
+        ensure_collection()
+        seen   = {}
+        offset = None
+        while True:
+            result, offset = qdrant.scroll(
+                collection_name=COLLECTION,
+                limit=100,
+                offset=offset,
+                with_payload=True,
+                with_vectors=False
+            )
+            for point in result:
+                meta = point.payload.get("metadata", {})
+                did  = meta.get("doc_id")
+                if did and did not in seen:
+                    seen[did] = {
+                        "doc_id":      did,
+                        "filename":    meta.get("filename", "?"),
+                        "type":        meta.get("type", "?"),
+                        "langue":      meta.get("langue", "?"),
+                        "exercice":    meta.get("exercice"),
+                        "societe":     meta.get("societe"),
+                        "description": meta.get("description", ""),
+                    }
+            if offset is None:
+                break
+        return jsonify(list(seen.values()))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/health", methods=["GET"])
+def health():
+    try:
+        count = qdrant.count(collection_name=COLLECTION).count
+        return jsonify({"status": "ok", "chunks": count,
+                        "docs": len(ingestion_status), "store": "qdrant+e5"})
+    except Exception as e:
+        return jsonify({"status": "qdrant_offline", "error": str(e)}), 200
+
+if __name__ == "__main__":
+    app.run(debug=False, port=5000, threaded=True)

@@ -1,0 +1,16 @@
+2026-06-08 15:34:41,104 │ INFO    │ =======================================================
+2026-06-08 15:34:41,104 │ INFO    │ RUN 20260608_153441 | 33 questions | doc_id=ALL
+2026-06-08 15:34:41,104 │ INFO    │ =======================================================
+2026-06-08 15:34:41,105 │ INFO    │ ▶ [q01] T1 | Quel est le taux de TVA applicable aux opérations d'hébergement et de resta
+2026-06-08 15:34:54,531 │ INFO    │   LLM    → 11.1s | 53 chars
+2026-06-08 15:34:54,532 │ INFO    │   RESP   → 10 % avec droit à déduction (Article 99-B-1° du CGI).
+2026-06-08 15:34:54,533 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-08 15:34:54,534 │ INFO    │ ■ [q01] done in 13.429s
+───────────────────────────────────────────────────────
+2026-06-08 15:34:55,036 │ INFO    │ ▶ [q02] T1 | Quel est le taux de l'IS applicable aux établissements de crédit et à Bank 
+2026-06-08 15:35:07,698 │ INFO    │   LLM    → 10.6s | 278 chars
+2026-06-08 15:35:07,698 │ INFO    │   RESP   → Le taux de l'IS applicable aux établissements de crédit, organismes assimilés, Bank Al Maghrib, la Caisse de dépôt et de gestion e…
+2026-06-08 15:35:07,699 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-08 15:35:07,700 │ INFO    │ ■ [q02] done in 12.664s
+───────────────────────────────────────────────────────
+2026-06-08 15:35:08,201 │ INFO    │ ▶ [q03] T1 | Les agents de l'administration fiscale sont-ils tenus au secret professionn

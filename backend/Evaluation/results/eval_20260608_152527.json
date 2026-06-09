@@ -1,0 +1,64 @@
+{
+  "run_id": "20260608_152527",
+  "summary": {
+    "run_id": "20260608_152527",
+    "total": 1,
+    "generated": 1,
+    "exact_match": 1.0,
+    "token_recall": 1.0,
+    "article_cited": 1.0,
+    "hallucination_rate": 0.0,
+    "confident_no_source": 0.0,
+    "keyword_hit_rate": 0.0,
+    "avg_latency_s": 12.076,
+    "by_tier": {
+      "tier_3": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0,
+        "article_cited": 1.0,
+        "hallucination": 0.0,
+        "avg_latency_s": 12.076
+      }
+    },
+    "by_cat": {
+      "cat_3": {
+        "n": 1,
+        "label": "Numérique/Tableaux",
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      }
+    },
+    "by_type": {
+      "seuil_rare": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      }
+    },
+    "failures": []
+  },
+  "results": [
+    {
+      "id": "q12",
+      "tier": 3,
+      "cat": 3,
+      "type": "seuil_rare",
+      "question": "Quel est le seuil de chiffre d'affaires consolidé à partir duquel une entreprise doit déposer une déclaration pays par pays ?",
+      "expected": "8 122 500 000",
+      "expected_article": "article 154 ter",
+      "response": "Le seuil est de 8.122.500.000 dirhams de chiffre d'affaires annuel hors taxes consolidé (article 154 ter.1120 du CGI, paragraphe I-b).",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 12.076,
+      "articles_detected": [
+        "154"
+      ]
+    }
+  ]
+}

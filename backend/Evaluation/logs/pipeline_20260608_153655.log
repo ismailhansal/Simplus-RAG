@@ -1,0 +1,10 @@
+2026-06-08 15:36:55,787 │ INFO    │ =======================================================
+2026-06-08 15:36:55,787 │ INFO    │ RUN 20260608_153655 | 1 questions | doc_id=ALL
+2026-06-08 15:36:55,787 │ INFO    │ =======================================================
+2026-06-08 15:36:55,788 │ INFO    │ ▶ [q14] T2 | Une entreprise peut-elle déduire de son résultat fiscal une amende pour inf
+2026-06-08 15:37:06,588 │ INFO    │   LLM    → 8.7s | 44 chars
+2026-06-08 15:37:06,588 │ INFO    │   RESP   → Information non présente dans les documents.
+2026-06-08 15:37:06,590 │ INFO    │   SCORE  → EM=False Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-08 15:37:06,591 │ INFO    │ ■ [q14] done in 10.803s
+───────────────────────────────────────────────────────
+2026-06-08 15:37:07,094 │ INFO    │ 💾 Résultats → C:\Users\ismail\Desktop\Simplus-RAG\backend\evaluation\results\eval_20260608_153655.json

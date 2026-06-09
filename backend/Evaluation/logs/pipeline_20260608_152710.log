@@ -1,0 +1,10 @@
+2026-06-08 15:27:10,883 │ INFO    │ =======================================================
+2026-06-08 15:27:10,884 │ INFO    │ RUN 20260608_152710 | 1 questions | doc_id=ALL
+2026-06-08 15:27:10,884 │ INFO    │ =======================================================
+2026-06-08 15:27:10,884 │ INFO    │ ▶ [q23] T2 | Quel est le délai dont dispose un contribuable pour contester un impôt mis 
+2026-06-08 15:27:22,969 │ INFO    │   LLM    → 10.0s | 100 chars
+2026-06-08 15:27:22,969 │ INFO    │   RESP   → Six (6) mois suivant la date de mise en recouvrement du rôle, conformément à l'article 235-b du CGI.
+2026-06-08 15:27:22,972 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-08 15:27:22,973 │ INFO    │ ■ [q23] done in 12.088s
+───────────────────────────────────────────────────────
+2026-06-08 15:27:23,476 │ INFO    │ 💾 Résultats → C:\Users\ismail\Desktop\Simplus-RAG\backend\evaluation\results\eval_20260608_152710.json

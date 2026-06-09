@@ -1,0 +1,68 @@
+{
+  "run_id": "20260608_150910",
+  "summary": {
+    "run_id": "20260608_150910",
+    "total": 1,
+    "generated": 1,
+    "exact_match": 0.0,
+    "token_recall": 1.0,
+    "article_cited": 0.0,
+    "hallucination_rate": 0.0,
+    "confident_no_source": 0.0,
+    "keyword_hit_rate": 0.0,
+    "avg_latency_s": 10.814,
+    "by_tier": {
+      "tier_2": {
+        "n": 1,
+        "exact_match": 0.0,
+        "token_recall": 1.0,
+        "article_cited": 0.0,
+        "hallucination": 0.0,
+        "avg_latency_s": 10.814
+      }
+    },
+    "by_cat": {
+      "cat_2": {
+        "n": 1,
+        "label": "Sémantique/Embedding",
+        "exact_match": 0.0,
+        "token_recall": 1.0
+      }
+    },
+    "by_type": {
+      "synonymie_négation": {
+        "n": 1,
+        "exact_match": 0.0,
+        "token_recall": 1.0
+      }
+    },
+    "failures": [
+      {
+        "id": "q07",
+        "q": "Une entreprise peut-elle déduire la TVA sur l'achat d'un véh",
+        "expected": "non",
+        "resp": "Information non présente dans les documents."
+      }
+    ]
+  },
+  "results": [
+    {
+      "id": "q07",
+      "tier": 2,
+      "cat": 2,
+      "type": "synonymie_négation",
+      "question": "Une entreprise peut-elle déduire la TVA sur l'achat d'un véhicule de tourisme destiné à son directeur général ?",
+      "expected": "non",
+      "expected_article": "article 106",
+      "response": "Information non présente dans les documents.",
+      "exact_match": false,
+      "token_recall": 1.0,
+      "article_cited": false,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 10.814
+    }
+  ]
+}

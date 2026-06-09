@@ -1,0 +1,10 @@
+2026-06-08 15:25:27,244 │ INFO    │ =======================================================
+2026-06-08 15:25:27,244 │ INFO    │ RUN 20260608_152527 | 1 questions | doc_id=ALL
+2026-06-08 15:25:27,244 │ INFO    │ =======================================================
+2026-06-08 15:25:27,244 │ INFO    │ ▶ [q12] T3 | Quel est le seuil de chiffre d'affaires consolidé à partir duquel une entre
+2026-06-08 15:25:41,392 │ INFO    │   LLM    → 12.1s | 134 chars
+2026-06-08 15:25:41,392 │ INFO    │   RESP   → Le seuil est de 8.122.500.000 dirhams de chiffre d'affaires annuel hors taxes consolidé (article 154 ter.1120 du CGI, paragraphe I…
+2026-06-08 15:25:41,393 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-08 15:25:41,396 │ INFO    │ ■ [q12] done in 14.149s
+───────────────────────────────────────────────────────
+2026-06-08 15:25:41,899 │ INFO    │ 💾 Résultats → C:\Users\ismail\Desktop\Simplus-RAG\backend\evaluation\results\eval_20260608_152527.json

@@ -1,0 +1,71 @@
+{
+  "run_id": "20260608_200402",
+  "summary": {
+    "run_id": "20260608_200402",
+    "total": 1,
+    "generated": 1,
+    "exact_match": 0.0,
+    "token_recall": 0.0,
+    "article_cited": 0.0,
+    "hallucination_rate": 0.0,
+    "confident_no_source": 0.0,
+    "keyword_hit_rate": 0.0,
+    "avg_latency_s": 12.503,
+    "by_tier": {
+      "tier_2": {
+        "n": 1,
+        "exact_match": 0.0,
+        "token_recall": 0.0,
+        "article_cited": 0.0,
+        "hallucination": 0.0,
+        "avg_latency_s": 12.503
+      }
+    },
+    "by_cat": {
+      "cat_2": {
+        "n": 1,
+        "label": "Sémantique/Embedding",
+        "exact_match": 0.0,
+        "token_recall": 0.0
+      }
+    },
+    "by_type": {
+      "synonymie_concept": {
+        "n": 1,
+        "exact_match": 0.0,
+        "token_recall": 0.0
+      }
+    },
+    "failures": [
+      {
+        "id": "q05",
+        "q": "Quelles sont les sociétés exonérées de la cotisation minimal",
+        "expected": "pas nécessairement",
+        "resp": "Les sociétés, autres que les sociétés concessionnaires de service public, sont e"
+      }
+    ]
+  },
+  "results": [
+    {
+      "id": "q05",
+      "tier": 2,
+      "cat": 2,
+      "type": "synonymie_concept",
+      "question": "Quelles sont les sociétés exonérées de la cotisation minimale pendant les trente-six premiers mois suivant la date du début de leur exploitation ?",
+      "expected": "pas nécessairement",
+      "expected_article": "article 6",
+      "response": "Les sociétés, autres que les sociétés concessionnaires de service public, sont exonérées de la cotisation minimale pendant les trente-six (36) premiers mois suivant la date du début de leur exploitation, conformément à l'article 4 de la loi de finances n° 110-13.",
+      "exact_match": false,
+      "token_recall": 0.0,
+      "article_cited": false,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 12.503,
+      "articles_detected": [
+        "4"
+      ]
+    }
+  ]
+}

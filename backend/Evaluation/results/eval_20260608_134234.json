@@ -1,0 +1,904 @@
+{
+  "run_id": "20260608_134234",
+  "summary": {
+    "run_id": "20260608_134234",
+    "total": 33,
+    "generated": 33,
+    "exact_match": 0.697,
+    "token_recall": 0.758,
+    "article_cited": 0.667,
+    "hallucination_rate": 0.0,
+    "confident_no_source": 0.0,
+    "keyword_hit_rate": 0.0,
+    "avg_latency_s": 10.015,
+    "by_tier": {
+      "tier_1": {
+        "n": 4,
+        "exact_match": 1.0,
+        "token_recall": 1.0,
+        "article_cited": 0.75,
+        "hallucination": 0.0,
+        "avg_latency_s": 9.852
+      },
+      "tier_2": {
+        "n": 15,
+        "exact_match": 0.667,
+        "token_recall": 0.733,
+        "article_cited": 0.533,
+        "hallucination": 0.0,
+        "avg_latency_s": 9.98
+      },
+      "tier_3": {
+        "n": 11,
+        "exact_match": 0.545,
+        "token_recall": 0.636,
+        "article_cited": 0.727,
+        "hallucination": 0.0,
+        "avg_latency_s": 10.501
+      },
+      "tier_4": {
+        "n": 3,
+        "exact_match": 1.0,
+        "token_recall": 1.0,
+        "article_cited": 1.0,
+        "hallucination": 0.0,
+        "avg_latency_s": 8.63
+      }
+    },
+    "by_cat": {
+      "cat_1": {
+        "n": 4,
+        "label": "Keyword/BM25 pur",
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "cat_2": {
+        "n": 4,
+        "label": "Sémantique/Embedding",
+        "exact_match": 0.5,
+        "token_recall": 0.5
+      },
+      "cat_3": {
+        "n": 5,
+        "label": "Numérique/Tableaux",
+        "exact_match": 0.8,
+        "token_recall": 1.0
+      },
+      "cat_4": {
+        "n": 4,
+        "label": "Négatif/Exclusion",
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "cat_5": {
+        "n": 4,
+        "label": "Multi-conditions",
+        "exact_match": 0.5,
+        "token_recall": 0.5
+      },
+      "cat_6": {
+        "n": 4,
+        "label": "Temporel/Transitoire",
+        "exact_match": 0.25,
+        "token_recall": 0.5
+      },
+      "cat_7": {
+        "n": 3,
+        "label": "Piège/Ambiguïté",
+        "exact_match": 0.333,
+        "token_recall": 0.333
+      },
+      "cat_8": {
+        "n": 2,
+        "label": "Procédure/Sanction",
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      }
+    },
+    "by_type": {
+      "taux_keyword": {
+        "n": 2,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "règle_générale": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "taux_spécifique": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "synonymie_concept": {
+        "n": 3,
+        "exact_match": 0.333,
+        "token_recall": 0.333
+      },
+      "synonymie_négation": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "seuil_précis": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "borne_barème": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "barème_double_entrée": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "seuil_rare": {
+        "n": 1,
+        "exact_match": 0.0,
+        "token_recall": 1.0
+      },
+      "distinction_barème": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "négation_déduction": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "négation_durée": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "exception_cachée": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "exception_régime": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "conditions_multiples": {
+        "n": 1,
+        "exact_match": 0.0,
+        "token_recall": 0.0
+      },
+      "conditions_cumulatives": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "double_condition": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "triple_condition": {
+        "n": 1,
+        "exact_match": 0.0,
+        "token_recall": 0.0
+      },
+      "délai_prescription": {
+        "n": 1,
+        "exact_match": 0.0,
+        "token_recall": 0.0
+      },
+      "délai_réclamation": {
+        "n": 1,
+        "exact_match": 0.0,
+        "token_recall": 1.0
+      },
+      "transitoire_2026": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "délai_déclaratif": {
+        "n": 1,
+        "exact_match": 0.0,
+        "token_recall": 0.0
+      },
+      "borne_inclusive": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "condition_cachée": {
+        "n": 1,
+        "exact_match": 0.0,
+        "token_recall": 0.0
+      },
+      "confusion_régime": {
+        "n": 1,
+        "exact_match": 0.0,
+        "token_recall": 0.0
+      },
+      "barème_pénalité": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "sanction_employeur": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "hors_périmètre": {
+        "n": 2,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      },
+      "ambiguë": {
+        "n": 1,
+        "exact_match": 1.0,
+        "token_recall": 1.0
+      }
+    },
+    "failures": [
+      {
+        "id": "q05",
+        "q": "Une startup marocaine nouvellement créée est-elle obligée de",
+        "expected": "pas nécessairement",
+        "resp": "Information non présente dans les documents."
+      },
+      {
+        "id": "q06",
+        "q": "Mon entreprise vend uniquement à des clients étrangers. Est-",
+        "expected": "oui",
+        "resp": "Information non présente dans les documents."
+      },
+      {
+        "id": "q12",
+        "q": "Quel est le seuil de chiffre d'affaires consolidé à partir d",
+        "expected": "8 122 500 000",
+        "resp": "Le seuil est de 8.122.500.000 dirhams de chiffre d'affaires annuel hors taxes co"
+      },
+      {
+        "id": "q18",
+        "q": "Un promoteur immobilier peut-il bénéficier d'une exonération",
+        "expected": "50 et 80 m²",
+        "resp": "Oui, le promoteur immobilier peut bénéficier d'une exonération de TVA sur les lo"
+      },
+      {
+        "id": "q21",
+        "q": "Les dividendes versés par une société en Zone d'Accélération",
+        "expected": "oui",
+        "resp": "Non, l'article 7 de la loi de finances n° 50-25 exclut expressément les dividend"
+      },
+      {
+        "id": "q22",
+        "q": "Dans quel délai l'administration fiscale peut-elle rectifier",
+        "expected": "quatrième année",
+        "resp": "L'administration dispose d'un délai de trois (3) mois suivant la date de la fin "
+      },
+      {
+        "id": "q23",
+        "q": "Quel est le délai dont dispose un contribuable pour conteste",
+        "expected": "six mois",
+        "resp": "Six (6) mois suivant la date de mise en recouvrement, conformément à l'article 2"
+      },
+      {
+        "id": "q25",
+        "q": "Quel est le délai de dépôt de la déclaration de résultat fis",
+        "expected": "3 mois",
+        "resp": "Information non présente dans les documents."
+      },
+      {
+        "id": "q27",
+        "q": "Le taux IS de 35% s'applique-t-il automatiquement dès qu'une",
+        "expected": "non",
+        "resp": "Oui, le taux de 35% s'applique aux sociétés dont le bénéfice net est égal ou sup"
+      },
+      {
+        "id": "q28",
+        "q": "Les panneaux photovoltaïques sont-ils exonérés de TVA ?",
+        "expected": "non",
+        "resp": "Oui, exonérés de TVA à l'achat pour les fabricants de panneaux photovoltaïques, "
+      }
+    ]
+  },
+  "results": [
+    {
+      "id": "q01",
+      "tier": 1,
+      "cat": 1,
+      "type": "taux_keyword",
+      "question": "Quel est le taux de TVA applicable aux opérations d'hébergement et de restauration ?",
+      "expected": "10%",
+      "expected_article": "article 99",
+      "response": "10% avec droit à déduction, conformément à l'article 99-B-1° du CGI.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 9.717
+    },
+    {
+      "id": "q02",
+      "tier": 1,
+      "cat": 1,
+      "type": "taux_keyword",
+      "question": "Quel est le taux de l'IS applicable aux établissements de crédit et à Bank Al-Maghrib ?",
+      "expected": "40%",
+      "expected_article": "article 19",
+      "response": "Le taux de l'IS applicable aux établissements de crédit et à Bank Al-Maghrib est de 40%, conformément à l'article 6 de la loi de finances n° 50-22 pour l'année budgétaire 2023.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": false,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 9.655
+    },
+    {
+      "id": "q03",
+      "tier": 1,
+      "cat": 1,
+      "type": "règle_générale",
+      "question": "Les agents de l'administration fiscale sont-ils tenus au secret professionnel ?",
+      "expected": "oui",
+      "expected_article": "article 246",
+      "response": "Oui, conformément à l'article 246-I du CGI, toutes les personnes intervenant dans l'établissement, le contrôle, la perception ou le contentieux des impôts sont tenues au secret professionnel dans les termes des lois pénales en vigueur.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 9.167
+    },
+    {
+      "id": "q04",
+      "tier": 1,
+      "cat": 1,
+      "type": "taux_spécifique",
+      "question": "Quel est le taux de la cotisation minimale pour les ventes de produits pétroliers, gaz, beurre, huile, sucre, farine, eau, électricité et médicaments ?",
+      "expected": "0,15%",
+      "expected_article": "article 144",
+      "response": "Le taux de la cotisation minimale pour les produits pétroliers et le gaz est de 0,15%, conformément à l'article 144 (D) du CGI. Le beurre, l'huile, le sucre, la farine, l'eau, l'électricité et les médicaments ne sont pas mentionnés comme bénéficiant de ce taux réduit.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 10.868
+    },
+    {
+      "id": "q05",
+      "tier": 2,
+      "cat": 2,
+      "type": "synonymie_concept",
+      "question": "Une startup marocaine nouvellement créée est-elle obligée de payer des impôts dès la première année d'activité ?",
+      "expected": "pas nécessairement",
+      "expected_article": "article 6",
+      "response": "Information non présente dans les documents.",
+      "exact_match": false,
+      "token_recall": 0.0,
+      "article_cited": false,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 9.738
+    },
+    {
+      "id": "q06",
+      "tier": 2,
+      "cat": 2,
+      "type": "synonymie_concept",
+      "question": "Mon entreprise vend uniquement à des clients étrangers. Est-ce qu'elle bénéficie d'avantages fiscaux au Maroc ?",
+      "expected": "oui",
+      "expected_article": "article 6",
+      "response": "Information non présente dans les documents.",
+      "exact_match": false,
+      "token_recall": 0.0,
+      "article_cited": false,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 9.306
+    },
+    {
+      "id": "q07",
+      "tier": 2,
+      "cat": 2,
+      "type": "synonymie_négation",
+      "question": "Une entreprise peut-elle déduire la TVA sur l'achat d'un véhicule de tourisme destiné à son directeur général ?",
+      "expected": "non",
+      "expected_article": "article 106",
+      "response": "Information non présente dans les documents.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": false,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 8.747
+    },
+    {
+      "id": "q08",
+      "tier": 2,
+      "cat": 2,
+      "type": "synonymie_concept",
+      "question": "Une société étrangère qui a une succursale au Maroc doit-elle payer l'IS sur les bénéfices générés par cette succursale ?",
+      "expected": "oui",
+      "expected_article": "article 5",
+      "response": "Oui, la succursale d'une société non résidente est imposée à l'IS au Maroc sur les bénéfices générés par son activité, conformément à l'article 5 du CGI (régime des établissements stables).",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 10.326
+    },
+    {
+      "id": "q09",
+      "tier": 2,
+      "cat": 3,
+      "type": "seuil_précis",
+      "question": "À partir de quel montant de bénéfice net une société est-elle soumise au taux IS de 35% ?",
+      "expected": "100 000 000",
+      "expected_article": "article 19",
+      "response": "Le taux de 35% s'applique aux sociétés dont le bénéfice net est égal ou supérieur à 100 000 000 de dirhams, conformément à l'article 19 (I-B) du CGI.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 10.552
+    },
+    {
+      "id": "q10",
+      "tier": 2,
+      "cat": 3,
+      "type": "borne_barème",
+      "question": "Quelle est la tranche du revenu exonérée dans le barème de l'impôt sur le revenu 2026 ?",
+      "expected": "40 000",
+      "expected_article": "article 73",
+      "response": "La tranche du revenu allant jusqu'à 40 000 dirhams est exonérée, conformément à l'article 73-I du Code Général des Impôts.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 9.639
+    },
+    {
+      "id": "q11",
+      "tier": 2,
+      "cat": 3,
+      "type": "barème_double_entrée",
+      "question": "Quel est l'abattement forfaitaire applicable aux pensions de retraite pour la part annuelle ne dépassant pas 168 000 dirhams ?",
+      "expected": "70%",
+      "expected_article": "article 60",
+      "response": "70% sur le montant brut qui ne dépasse pas annuellement 168 000 dirhams, conformément à l'article 60-I du CGI.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 9.395
+    },
+    {
+      "id": "q12",
+      "tier": 3,
+      "cat": 3,
+      "type": "seuil_rare",
+      "question": "Quel est le seuil de chiffre d'affaires consolidé à partir duquel une entreprise doit déposer une déclaration pays par pays ?",
+      "expected": "8 122 500 000",
+      "expected_article": "article 154 ter",
+      "response": "Le seuil est de 8.122.500.000 dirhams de chiffre d'affaires annuel hors taxes consolidé, conformément à l'article 154 ter.1120-I-b du CGI.",
+      "exact_match": false,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 9.423
+    },
+    {
+      "id": "q13",
+      "tier": 2,
+      "cat": 3,
+      "type": "distinction_barème",
+      "question": "Quel est le taux d'imposition des profits nets de cession d'actions cotées en bourse par une personne physique ?",
+      "expected": "15%",
+      "expected_article": "article 73",
+      "response": "15% selon l'article 73 (II-C-1°-a) du Code Général des Impôts.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 9.565
+    },
+    {
+      "id": "q14",
+      "tier": 2,
+      "cat": 4,
+      "type": "négation_déduction",
+      "question": "Une entreprise peut-elle déduire de son résultat fiscal une amende pour infraction à la législation du travail ?",
+      "expected": "non",
+      "expected_article": "article 11",
+      "response": "Information non présente dans les documents.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": false,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 8.491
+    },
+    {
+      "id": "q15",
+      "tier": 2,
+      "cat": 4,
+      "type": "négation_durée",
+      "question": "Une société peut-elle reporter indéfiniment un déficit fiscal sur les exercices suivants ?",
+      "expected": "non",
+      "expected_article": "article 12",
+      "response": "Non, le déficit ne peut pas être reporté indéfiniment. Conformément à l'article 37 du CGI, le déficit d'un exercice est déductible du bénéfice des exercices suivants dans les conditions prévues à l'article 12, qui limite la durée du report.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 10.427
+    },
+    {
+      "id": "q16",
+      "tier": 3,
+      "cat": 4,
+      "type": "exception_cachée",
+      "question": "Une société installée dans une Zone d'Accélération Industrielle est-elle soumise au taux IS de 35% si son bénéfice dépasse 100 millions de dirhams ?",
+      "expected": "non",
+      "expected_article": "article 19",
+      "response": "Non, les sociétés exerçant leurs activités dans les zones d'accélération industrielle prévues à l'article 6 (II-B-8°) sont expressément exclues du taux de 35% prévu à l'article 19 (I-B).",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 11.614
+    },
+    {
+      "id": "q17",
+      "tier": 3,
+      "cat": 4,
+      "type": "exception_régime",
+      "question": "Les dividendes versés entre sociétés marocaines sont-ils toujours soumis à la retenue à la source IS de 10% ?",
+      "expected": "non",
+      "expected_article": "article 6",
+      "response": "Information non présente dans les documents.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": false,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 9.709
+    },
+    {
+      "id": "q18",
+      "tier": 3,
+      "cat": 5,
+      "type": "conditions_multiples",
+      "question": "Un promoteur immobilier peut-il bénéficier d'une exonération de TVA sur les logements sociaux ? Si oui, quelles sont toutes les conditions ?",
+      "expected": "50 et 80 m²",
+      "expected_article": "article 92",
+      "response": "Oui, le promoteur immobilier peut bénéficier d'une exonération de TVA sur les logements sociaux réalisés dans le cadre d'une convention conclue avec l'Etat (article 92-I-28° CGI).\n\nConditions principales : être personne morale ou physique soumise au régime du résultat net réel ; réaliser un programme d'au moins 500 logements sociaux (ou 100 en milieu rural) réparti sur 5 ans maximum ; déposer la demande d'autorisation de construire dans un délai de 6 mois à compter de la conclusion de la convention ; tenir une comptabilité séparée par programme ; produire caution bancaire ou hypothèque au profit de l'Etat (article 130-II CGI) ; convention conclue durant la période allant du 1er janvier 2008 au 31 décembre 2020.",
+      "exact_match": false,
+      "token_recall": 0.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 13.799
+    },
+    {
+      "id": "q19",
+      "tier": 3,
+      "cat": 5,
+      "type": "conditions_cumulatives",
+      "question": "Quelles sont les conditions cumulatives pour qu'une société bénéficie de l'exclusion du taux IS de 35% via un investissement de 1,5 milliard de dirhams ?",
+      "expected": "1er janvier 2023",
+      "expected_article": "article 19",
+      "response": "Les sociétés constituées à compter du 1er janvier 2023 doivent signer une convention avec l'État s'engageant à investir au moins 1 500 000 000 dirhams sur cinq ans (article 19-I-B-3°), exclusivement dans des immobilisations corporelles conservées pendant au moins dix ans à compter de leur acquisition (article 19-I-B-3°).",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 12.062
+    },
+    {
+      "id": "q20",
+      "tier": 3,
+      "cat": 5,
+      "type": "double_condition",
+      "question": "Une coopérative agricole qui transforme les matières premières de ses adhérents et réalise un CA annuel de 8 millions DH HT est-elle exonérée d'IS ?",
+      "expected": "oui",
+      "expected_article": "article 7",
+      "response": "Oui, exonération d'IS applicable car le chiffre d'affaires annuel est inférieur à 10 000 000 DH HT (Article 7-I-A du CGI).",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 11.494
+    },
+    {
+      "id": "q21",
+      "tier": 3,
+      "cat": 5,
+      "type": "triple_condition",
+      "question": "Les dividendes versés par une société en Zone d'Accélération Industrielle à un non-résident, provenant de bénéfices de source étrangère, sont-ils exonérés de retenue à la source ?",
+      "expected": "oui",
+      "expected_article": "article 6",
+      "response": "Non, l'article 7 de la loi de finances n° 50-25 exclut expressément les dividendes de source étrangère versés aux non-résidents visés à l'article 6 (I-C-1°) du champ de l'exonération prévue au II.",
+      "exact_match": false,
+      "token_recall": 0.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 10.401
+    },
+    {
+      "id": "q22",
+      "tier": 2,
+      "cat": 6,
+      "type": "délai_prescription",
+      "question": "Dans quel délai l'administration fiscale peut-elle rectifier une omission dans une déclaration IS ?",
+      "expected": "quatrième année",
+      "expected_article": "article 232",
+      "response": "L'administration dispose d'un délai de trois (3) mois suivant la date de la fin du contrôle fiscal pour notifier les rectifications au contribuable, conformément à l'article 220-I du CGI.",
+      "exact_match": false,
+      "token_recall": 0.0,
+      "article_cited": false,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 12.562
+    },
+    {
+      "id": "q23",
+      "tier": 2,
+      "cat": 6,
+      "type": "délai_réclamation",
+      "question": "Quel est le délai dont dispose un contribuable pour contester un impôt mis en recouvrement par voie de rôle ?",
+      "expected": "six mois",
+      "expected_article": "article 235",
+      "response": "Six (6) mois suivant la date de mise en recouvrement, conformément à l'article 235-b du CGI.",
+      "exact_match": false,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 9.136
+    },
+    {
+      "id": "q24",
+      "tier": 3,
+      "cat": 6,
+      "type": "transitoire_2026",
+      "question": "Quel est le taux IS applicable à une société dont le bénéfice net est inférieur ou égal à 300 000 dirhams pour l'exercice ouvert à compter du 1er janvier 2026 ?",
+      "expected": "20%",
+      "expected_article": "article 247",
+      "response": "20% (article 6 de la loi de finances n° 50-22 pour 2023, paragraphe XXXVII-A-1).",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": false,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 9.254
+    },
+    {
+      "id": "q25",
+      "tier": 2,
+      "cat": 6,
+      "type": "délai_déclaratif",
+      "question": "Quel est le délai de dépôt de la déclaration de résultat fiscal IS après la clôture de l'exercice ?",
+      "expected": "3 mois",
+      "expected_article": "article 20",
+      "response": "Information non présente dans les documents.",
+      "exact_match": false,
+      "token_recall": 0.0,
+      "article_cited": false,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 8.57
+    },
+    {
+      "id": "q26",
+      "tier": 3,
+      "cat": 7,
+      "type": "borne_inclusive",
+      "question": "Un contribuable dont le revenu annuel est exactement de 40 000 dirhams paie-t-il de l'IR ?",
+      "expected": "non",
+      "expected_article": "article 73",
+      "response": "Non, la tranche de revenu allant jusqu'à 40 000 dirhams est exonérée conformément à l'article 73-I du CGI.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 9.329
+    },
+    {
+      "id": "q27",
+      "tier": 3,
+      "cat": 7,
+      "type": "condition_cachée",
+      "question": "Le taux IS de 35% s'applique-t-il automatiquement dès qu'une société dépasse 100 millions DH de bénéfice net ?",
+      "expected": "non",
+      "expected_article": "article 19",
+      "response": "Oui, le taux de 35% s'applique aux sociétés dont le bénéfice net est égal ou supérieur à 100 000 000 dirhams, conformément à l'article 19 (I-B) du CGI.",
+      "exact_match": false,
+      "token_recall": 0.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 9.324
+    },
+    {
+      "id": "q28",
+      "tier": 3,
+      "cat": 7,
+      "type": "confusion_régime",
+      "question": "Les panneaux photovoltaïques sont-ils exonérés de TVA ?",
+      "expected": "non",
+      "expected_article": "article 99",
+      "response": "Oui, exonérés de TVA à l'achat pour les fabricants de panneaux photovoltaïques, conformément à l'article 92-I-54° du CGI.",
+      "exact_match": false,
+      "token_recall": 0.0,
+      "article_cited": false,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 9.099
+    },
+    {
+      "id": "q29",
+      "tier": 2,
+      "cat": 8,
+      "type": "barème_pénalité",
+      "question": "En cas de paiement spontané d'un impôt avec un retard de 20 jours, quelle est la pénalité applicable ?",
+      "expected": "5%",
+      "expected_article": "article 208",
+      "response": "La pénalité est de 5% si le paiement est effectué dans un délai de retard ne dépassant pas trente (30) jours, conformément à l'article 208-I du CGI. À cela s'ajoute la majoration de 5% pour le premier mois de retard prévue au même article.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 10.81
+    },
+    {
+      "id": "q30",
+      "tier": 2,
+      "cat": 8,
+      "type": "sanction_employeur",
+      "question": "Un employeur qui n'opère pas la retenue à la source sur les salaires de ses employés, quelles sont les conséquences fiscales pour lui ?",
+      "expected": "amendes",
+      "expected_article": "article 208",
+      "response": "D'après les documents fournis, l'article 156-I CGI prévoit que la retenue à la source doit être opérée par l'employeur sur chaque paiement de salaire, et l'article 211 précise que les personnes chargées d'opérer la retenue à la source sont tenues de conserver les documents comptables pendant dix ans. Cependant, les sanctions spécifiques (amendes, majorations) applicables à l'employeur qui n'opère pas la retenue à la source ne sont pas détaillées dans le contexte documentaire fourni. Information non présente dans les documents.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": false,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 12.438
+    },
+    {
+      "id": "q_hors_01",
+      "tier": 4,
+      "cat": null,
+      "type": "hors_périmètre",
+      "question": "Quel est le régime fiscal applicable aux revenus générés par les cryptomonnaies au Maroc ?",
+      "expected": "non présent",
+      "expected_article": null,
+      "response": "Information non présente dans les documents.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 8.552
+    },
+    {
+      "id": "q_hors_02",
+      "tier": 4,
+      "cat": null,
+      "type": "hors_périmètre",
+      "question": "Quelle est la TVA applicable aux NFT vendus par des artistes marocains ?",
+      "expected": "non présent",
+      "expected_article": null,
+      "response": "Information non présente dans les documents.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 8.561
+    },
+    {
+      "id": "q_hors_03",
+      "tier": 4,
+      "cat": null,
+      "type": "ambiguë",
+      "question": "Quel est le taux applicable aux dividendes ?",
+      "expected": "dépend",
+      "expected_article": null,
+      "response": "Information non présente dans les documents.",
+      "exact_match": true,
+      "token_recall": 1.0,
+      "article_cited": true,
+      "hallucination_flag": false,
+      "confident_no_source": false,
+      "invented_articles": [],
+      "keyword_hit_rate": 0.0,
+      "latency_s": 8.776
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+2026-06-08 20:04:02,998 │ INFO    │ =======================================================
+2026-06-08 20:04:02,998 │ INFO    │ RUN 20260608_200402 | 1 questions | doc_id=ALL
+2026-06-08 20:04:02,998 │ INFO    │ =======================================================
+2026-06-08 20:04:02,999 │ INFO    │ ▶ [q05] T2 | Quelles sont les sociétés exonérées de la cotisation minimale pendant les t
+2026-06-08 20:04:17,614 │ INFO    │   LLM    → 12.5s | 263 chars
+2026-06-08 20:04:17,614 │ INFO    │   RESP   → Les sociétés, autres que les sociétés concessionnaires de service public, sont exonérées de la cotisation minimale pendant les tre…
+2026-06-08 20:04:17,616 │ INFO    │   SCORE  → EM=False Recall=0.0 Art=False Hall=False KW=0.0
+2026-06-08 20:04:17,616 │ INFO    │ ■ [q05] done in 14.617s
+───────────────────────────────────────────────────────
+2026-06-08 20:04:18,119 │ INFO    │ 💾 Résultats → C:\Users\ismail\Desktop\Simplus-RAG\backend\evaluation\results\eval_20260608_200402.json

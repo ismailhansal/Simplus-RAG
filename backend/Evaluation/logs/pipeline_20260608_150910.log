@@ -1,0 +1,10 @@
+2026-06-08 15:09:10,718 │ INFO    │ =======================================================
+2026-06-08 15:09:10,723 │ INFO    │ RUN 20260608_150910 | 1 questions | doc_id=ALL
+2026-06-08 15:09:10,723 │ INFO    │ =======================================================
+2026-06-08 15:09:10,723 │ INFO    │ ▶ [q07] T2 | Une entreprise peut-elle déduire la TVA sur l'achat d'un véhicule de touris
+2026-06-08 15:09:23,649 │ INFO    │   LLM    → 10.8s | 44 chars
+2026-06-08 15:09:23,649 │ INFO    │   RESP   → Information non présente dans les documents.
+2026-06-08 15:09:23,650 │ INFO    │   SCORE  → EM=False Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-08 15:09:23,651 │ INFO    │ ■ [q07] done in 12.929s
+───────────────────────────────────────────────────────
+2026-06-08 15:09:24,154 │ INFO    │ 💾 Résultats → C:\Users\ismail\Desktop\Simplus-RAG\backend\evaluation\results\eval_20260608_150910.json
