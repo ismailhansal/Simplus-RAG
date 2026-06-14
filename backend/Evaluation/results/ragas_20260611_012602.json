@@ -1,0 +1,108 @@
+{
+  "run_id": "20260611_012602",
+  "summary": {
+    "run_id": "20260611_012602",
+    "total": 4,
+    "faithfulness": 0.0,
+    "answer_relevancy": 0.0,
+    "context_precision": 0.0,
+    "context_recall": 0.0,
+    "avg_latency_s": 4.088,
+    "avg_ragas_latency": 0.0,
+    "errors": 4,
+    "by_tier": {
+      "tier_1": {
+        "n": 4,
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "context_precision": 0.0,
+        "context_recall": 0.0
+      }
+    },
+    "by_cat": {
+      "cat_1": {
+        "n": 4,
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "context_precision": 0.0,
+        "context_recall": 0.0
+      }
+    },
+    "low_faith": [],
+    "low_recall": []
+  },
+  "results": [
+    {
+      "id": "q01",
+      "tier": 1,
+      "cat": 1,
+      "type": "taux_keyword",
+      "question": "Quel est le taux de TVA applicable aux opérations d'hébergement et de restauration ?",
+      "expected": "10%",
+      "expected_article": "article 99",
+      "response": "[ERREUR BACKEND] HTTPConnectionPool(host='localhost', port=5000): Max retries exceeded with url: /chat (Caused by NewConnectionError(\"HTTPConnection(host='localhost', port=5000): Failed to establish a new connection: [WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée\"))",
+      "latency_s": 4.083,
+      "ragas_latency_s": 0.0,
+      "retrieved_n": 0,
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.0,
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "ragas_error": "no_chunks"
+    },
+    {
+      "id": "q02",
+      "tier": 1,
+      "cat": 1,
+      "type": "taux_keyword",
+      "question": "Quel est le taux de l'IS applicable aux établissements de crédit et à Bank Al-Maghrib ?",
+      "expected": "40%",
+      "expected_article": "article 19",
+      "response": "[ERREUR BACKEND] HTTPConnectionPool(host='localhost', port=5000): Max retries exceeded with url: /chat (Caused by NewConnectionError(\"HTTPConnection(host='localhost', port=5000): Failed to establish a new connection: [WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée\"))",
+      "latency_s": 4.078,
+      "ragas_latency_s": 0.0,
+      "retrieved_n": 0,
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.0,
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "ragas_error": "no_chunks"
+    },
+    {
+      "id": "q03",
+      "tier": 1,
+      "cat": 1,
+      "type": "règle_générale",
+      "question": "Les agents de l'administration fiscale sont-ils tenus au secret professionnel ?",
+      "expected": "oui",
+      "expected_article": "article 246",
+      "response": "[ERREUR BACKEND] HTTPConnectionPool(host='localhost', port=5000): Max retries exceeded with url: /chat (Caused by NewConnectionError(\"HTTPConnection(host='localhost', port=5000): Failed to establish a new connection: [WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée\"))",
+      "latency_s": 4.096,
+      "ragas_latency_s": 0.0,
+      "retrieved_n": 0,
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.0,
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "ragas_error": "no_chunks"
+    },
+    {
+      "id": "q04",
+      "tier": 1,
+      "cat": 1,
+      "type": "taux_spécifique",
+      "question": "Quel est le taux de la cotisation minimale pour les ventes de produits pétroliers, gaz, beurre, huile, sucre, farine, eau, électricité et médicaments ?",
+      "expected": "0,15%",
+      "expected_article": "article 144",
+      "response": "[ERREUR BACKEND] HTTPConnectionPool(host='localhost', port=5000): Max retries exceeded with url: /chat (Caused by NewConnectionError(\"HTTPConnection(host='localhost', port=5000): Failed to establish a new connection: [WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée\"))",
+      "latency_s": 4.094,
+      "ragas_latency_s": 0.0,
+      "retrieved_n": 0,
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.0,
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "ragas_error": "no_chunks"
+    }
+  ]
+}

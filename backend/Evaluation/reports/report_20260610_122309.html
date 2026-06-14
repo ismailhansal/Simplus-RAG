@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>RAG Eval Report — 20260610_122309</title>
+  
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap');
+:root {
+  --bg:#0e0e0e; --surface:#141414; --border:#242424;
+  --accent:#c8ff00; --text:#e0e0e0; --muted:#555;
+  --ok:#4ade80; --warn:#facc15; --fail:#f87171;
+  --ragas:#818cf8;
+  --font-mono:'IBM Plex Mono',monospace; --font-sans:'IBM Plex Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:14px;line-height:1.6}
+a{color:var(--accent);text-decoration:none}
+h1{font-family:var(--font-mono);font-size:1.1rem;letter-spacing:.15em;color:var(--accent);text-transform:uppercase;padding:2rem 2.5rem .5rem}
+h2{font-family:var(--font-mono);font-size:.8rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin:2rem 2.5rem .8rem}
+.meta{font-family:var(--font-mono);font-size:.72rem;color:var(--muted);padding:0 2.5rem 1.5rem}
+.cards{display:flex;flex-wrap:wrap;gap:1rem;padding:0 2.5rem 1rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1.2rem 1.4rem;min-width:160px;flex:1}
+.card-label{font-family:var(--font-mono);font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem}
+.card-val{font-family:var(--font-mono);font-size:1.5rem;font-weight:600;color:var(--accent)}
+.card-sub{font-size:.72rem;color:var(--muted);margin-top:.2rem}
+.card.warn .card-val{color:var(--warn)}
+.card.danger .card-val{color:var(--fail)}
+.card.ok .card-val{color:var(--ok)}
+.card.ragas .card-val{color:var(--ragas)}
+.card.ragas{border-color:#2e2d5a}
+.ragas-section-title{
+  font-family:var(--font-mono);font-size:.65rem;letter-spacing:.1em;
+  color:var(--ragas);text-transform:uppercase;
+  padding:.3rem .7rem;background:#1a1a2e;border-radius:3px;
+  display:inline-block;margin-bottom:.5rem
+}
+.tier-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;padding:0 2.5rem 1rem}
+.tier-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1rem 1.2rem}
+.tier-head{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.08em;margin-bottom:.8rem;display:flex;justify-content:space-between;align-items:center}
+.tier-name{color:var(--text)}
+.tier-obj{color:var(--muted);font-size:.65rem}
+.bar-row{display:flex;align-items:center;gap:.6rem;margin:.3rem 0;font-size:.72rem}
+.bar-label{color:var(--muted);width:110px;flex-shrink:0}
+.bar-track{flex:1;background:#1e1e1e;border-radius:99px;height:6px;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px}
+.bar-val{color:var(--text);width:40px;text-align:right;font-family:var(--font-mono);font-size:.65rem}
+.bar-ragas .bar-label{color:#5b5b8a}
+.divider-ragas{border:none;border-top:1px dashed #2e2d5a;margin:.5rem 0}
+table{width:calc(100% - 5rem);margin:0 2.5rem 2rem;border-collapse:collapse;font-size:.8rem}
+th{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);padding:.6rem .8rem;text-align:left}
+td{padding:.55rem .8rem;border-bottom:1px solid #1a1a1a;vertical-align:top}
+tr:hover td{background:#111}
+.badge{display:inline-block;border-radius:3px;padding:1px 6px;font-family:var(--font-mono);font-size:.65rem}
+.badge.ok{background:#0f2e1b;color:var(--ok)}
+.badge.fail{background:#2e0f0f;color:var(--fail)}
+.badge.warn{background:#2e2507;color:var(--warn)}
+.badge.neutral{background:#1e1e1e;color:var(--muted)}
+.tier-badge{font-size:.62rem;font-family:var(--font-mono);padding:1px 5px;border-radius:2px}
+.t1{background:#0d2d0d;color:#4ade80}.t2{background:#1a200d;color:#a3e635}
+.t3{background:#2d200d;color:#fbbf24}.t4{background:#2d0d2d;color:#c084fc}
+.response-cell{max-width:280px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:var(--muted);font-size:.72rem}
+.section-sep{border:none;border-top:1px solid var(--border);margin:1.5rem 2.5rem}
+.hall-flag{color:var(--fail);font-family:var(--font-mono);font-size:.65rem}
+.alert-box{margin:0 2.5rem 1.2rem;background:#1a1218;border:1px solid #3a1a2a;border-radius:6px;padding:1rem 1.2rem}
+.alert-title{font-family:var(--font-mono);font-size:.65rem;color:var(--fail);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem}
+.alert-item{font-size:.75rem;color:var(--muted);margin:.3rem 0;display:flex;gap:.8rem}
+.alert-id{font-family:var(--font-mono);color:var(--fail);width:50px;flex-shrink:0}
+.alert-score{font-family:var(--font-mono);color:var(--warn);width:60px;flex-shrink:0}
+.footer{font-family:var(--font-mono);font-size:.65rem;color:var(--muted);padding:1rem 2.5rem 2rem;border-top:1px solid var(--border);margin-top:2rem}
+</style>
+
+</head>
+<body>
+  <h1>⬡ RAG Audit — Rapport d'évaluation </h1>
+  <div class="meta">Run ID: 20260610_122309 &nbsp;·&nbsp; Généré le 11/06/2026 01:51</div>
+
+  <h2>KPIs globaux</h2>
+  
+    <div class="cards">
+      <div class="card ok">
+        <div class="card-label">Exact Match</div>
+        <div class="card-val">90.9%</div>
+        <div class="card-sub">cible globale ≥ 70%</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Token Recall</div>
+        <div class="card-val">90.9%</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Article cité</div>
+        <div class="card-val">86.5%</div>
+        <div class="card-sub">cible ≥ 60%</div>
+      </div>
+      <div class="card ok">
+        <div class="card-label">Hallucination</div>
+        <div class="card-val">0.0%</div>
+        <div class="card-sub">cible &lt; 10%</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Keyword Hit</div>
+        <div class="card-val">0.0%</div>
+        <div class="card-sub">retrieval quality</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Latence moy.</div>
+        <div class="card-val">17.556s</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Questions</div>
+        <div class="card-val">33</div>
+        <div class="card-sub">générées: 33</div>
+      </div>
+    </div>
+
+  
+
+  
+
+  <hr class="section-sep">
+  <h2>Résultats par tier</h2>
+  <div class="tier-grid">
+    <div class="tier-card">
+      <div class="tier-head">
+        <span class="tier-name">Tier 1 — Factuel</span>
+        <span class="tier-obj">obj 90% · n=4</span>
+      </div>
+      <div class="bar-row"><span class="bar-label">Exact Match</span><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div><span class="bar-val">100%</span></div><div class="bar-row"><span class="bar-label">Token Recall</span><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div><span class="bar-val">100%</span></div><div class="bar-row"><span class="bar-label">Article cité</span><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div><span class="bar-val">100%</span></div><div class="bar-row"><span class="bar-label">Hallucination</span><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div><span class="bar-val">0%</span></div>
+      
+      <div style="margin-top:.6rem;font-size:.65rem;font-family:var(--font-mono);color:var(--muted)">
+        latence moy. 15.372s
+      </div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-head">
+        <span class="tier-name">Tier 2 — Négation/Cond.</span>
+        <span class="tier-obj">obj 70% · n=15</span>
+      </div>
+      <div class="bar-row"><span class="bar-label">Exact Match</span><div class="bar-track"><div class="bar-fill" style="width:73.3%;background:#4ade80"></div></div><span class="bar-val">73%</span></div><div class="bar-row"><span class="bar-label">Token Recall</span><div class="bar-track"><div class="bar-fill" style="width:86.7%;background:#4ade80"></div></div><span class="bar-val">87%</span></div><div class="bar-row"><span class="bar-label">Article cité</span><div class="bar-track"><div class="bar-fill" style="width:53.3%;background:#facc15"></div></div><span class="bar-val">53%</span></div><div class="bar-row"><span class="bar-label">Hallucination</span><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div><span class="bar-val">0%</span></div>
+      
+      <div style="margin-top:.6rem;font-size:.65rem;font-family:var(--font-mono);color:var(--muted)">
+        latence moy. 17.018s
+      </div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-head">
+        <span class="tier-name">Tier 3 — Multi/Barème</span>
+        <span class="tier-obj">obj 50% · n=11</span>
+      </div>
+      <div class="bar-row"><span class="bar-label">Exact Match</span><div class="bar-track"><div class="bar-fill" style="width:90.9%;background:#4ade80"></div></div><span class="bar-val">91%</span></div><div class="bar-row"><span class="bar-label">Token Recall</span><div class="bar-track"><div class="bar-fill" style="width:90.9%;background:#4ade80"></div></div><span class="bar-val">91%</span></div><div class="bar-row"><span class="bar-label">Article cité</span><div class="bar-track"><div class="bar-fill" style="width:95%;background:#4ade80"></div></div><span class="bar-val">95%</span></div><div class="bar-row"><span class="bar-label">Hallucination</span><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div><span class="bar-val">0%</span></div>
+      
+      <div style="margin-top:.6rem;font-size:.65rem;font-family:var(--font-mono);color:var(--muted)">
+        latence moy. 18.718s
+      </div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-head">
+        <span class="tier-name">Tier 4 — Hors périmètre</span>
+        <span class="tier-obj">obj 100% · n=3</span>
+      </div>
+      <div class="bar-row"><span class="bar-label">Exact Match</span><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div><span class="bar-val">100%</span></div><div class="bar-row"><span class="bar-label">Token Recall</span><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div><span class="bar-val">100%</span></div><div class="bar-row"><span class="bar-label">Article cité</span><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div><span class="bar-val">100%</span></div><div class="bar-row"><span class="bar-label">Hallucination</span><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div><span class="bar-val">0%</span></div>
+      
+      <div style="margin-top:.6rem;font-size:.65rem;font-family:var(--font-mono);color:var(--muted)">
+        latence moy. 18.897s
+      </div>
+    </div></div>
+
+  <hr class="section-sep">
+  <h2>Résultats par type de question</h2>
+  
+    <table>
+      <thead><tr><th>Type</th><th>n</th><th>EM (barre)</th><th>EM %</th><th>Recall</th></tr></thead>
+      <tbody><tr><td style="font-family:var(--font-mono);font-size:.72rem">taux_keyword</td><td>2</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">règle_générale</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">taux_spécifique</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">seuil_précis</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">borne_barème</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">barème_double_entrée</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">seuil_rare</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">distinction_barème</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">négation_déduction</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">négation_durée</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">exception_cachée</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">exception_régime</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">conditions_cumulatives</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">double_condition</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">triple_condition</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">délai_prescription</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">délai_réclamation</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">transitoire_2026</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">borne_inclusive</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">condition_cachée</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">confusion_régime</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">barème_pénalité</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">hors_périmètre</td><td>2</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">ambiguë</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#4ade80"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">synonymie_concept</td><td>3</td><td><div class="bar-track"><div class="bar-fill" style="width:66.7%;background:#facc15"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">66.7%</td><td style="font-family:var(--font-mono);font-size:.7rem">66.7%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">synonymie_négation</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:0.0%;background:#f87171"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">0.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">conditions_multiples</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:0.0%;background:#f87171"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">0.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">0.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">délai_déclaratif</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:0.0%;background:#f87171"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">0.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">100.0%</td></tr><tr><td style="font-family:var(--font-mono);font-size:.72rem">sanction_employeur</td><td>1</td><td><div class="bar-track"><div class="bar-fill" style="width:0.0%;background:#f87171"></div></div></td><td style="font-family:var(--font-mono);font-size:.7rem">0.0%</td><td style="font-family:var(--font-mono);font-size:.7rem">0.0%</td></tr></tbody>
+    </table>
+
+  <hr class="section-sep">
+  <h2>Détail des questions</h2>
+  
+    <table>
+      <thead><tr>
+        <th>Tier</th><th>ID</th><th>Question</th><th>Attendu</th>
+        <th>EM</th><th>Recall</th><th>Article</th><th>Hallucin.</th>
+        
+        <th>Latence</th><th>Réponse</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="tier-badge t1">T1</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q01</td>
+          <td style="max-width:200px">Quel est le taux de TVA applicable aux opérations d'hébergement et de restauration ?</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">10%</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">13.967s</td>
+          <td class="response-cell" title="Le taux de TVA applicable aux opérations d'hébergement et de restauration est de 10 % avec droit à déduction, conformément à l'article 99-B-1° du Code Général des Impôts.">Le taux de TVA applicable aux opérations d'hébergement et de restauration est de 10 % avec droit à déduction, conformément à l'article 99-B-1° du Code Général des Impôts.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t1">T1</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q02</td>
+          <td style="max-width:200px">Quel est le taux de l'IS applicable aux établissements de crédit et à Bank Al-Maghrib…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">40%</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">13.424s</td>
+          <td class="response-cell" title="40%, conformément à l'article 6 (I-C) de la loi de finances n° 50-22.">40%, conformément à l'article 6 (I-C) de la loi de finances n° 50-22.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t1">T1</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q03</td>
+          <td style="max-width:200px">Les agents de l'administration fiscale sont-ils tenus au secret professionnel ?</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">oui</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">15.887s</td>
+          <td class="response-cell" title="Oui. Aux termes de l'article 246-I du CGI, toutes les personnes appelées à intervenir dans l'établissement, le contrôle, la perception ou le contentieux des impôts sont tenues au secret professionnel dans les termes des lois pénales en vigueur.">Oui. Aux termes de l'article 246-I du CGI, toutes les personnes appelées à intervenir dans l'établissement, le contrôle, la perception ou le contentieux des impôts sont tenues au secret professionnel dans les termes des lois pénales en vigueur.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t1">T1</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q04</td>
+          <td style="max-width:200px">Quel est le taux de la cotisation minimale pour les ventes de produits pétroliers, ga…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">0,15%</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">18.211s</td>
+          <td class="response-cell" title="Le taux de la cotisation minimale pour les ventes de produits pétroliers, gaz, beurre, huile, sucre, farine, eau, électricité et médicaments effectuées par les entreprises commerciales est de 0,15 %, conformément à l'article 4 de la loi de finances n° 110-13 pour l'année budgétaire 2014 (article 144-D du CGI).">Le taux de la cotisation minimale pour les ventes de produits pétroliers, gaz, beurre, huile, sucre, farine, eau, électricité et médicaments effectuées par les entreprises commerciales est de 0,15 %, conformément à l'article 4 de la loi de finances n° 110-13 pour l'année budgétaire 2014 (article 144-D du CGI).</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t2">T2</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q05</td>
+          <td style="max-width:200px">Une startup marocaine nouvellement créée est-elle obligée de payer des impôts dès la …</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">pas nécessairement</td>
+          <td><span class="badge fail">✗</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">0.0%</td>
+          <td><span class="badge fail">✗ non</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">19.675s</td>
+          <td class="response-cell" title="Information non présente dans les documents. Le contexte mentionne uniquement une exonération totale de l'impôt sur les sociétés pendant les cinq (5) premiers exercices pour les sociétés industrielles exerçant des activités fixées par voie réglementaire (Article 7 de la loi de finances n° 43-10), sans disposition générale applicable à toutes les startups.">Information non présente dans les documents. Le contexte mentionne uniquement une exonération totale de l'impôt sur les sociétés pendant les cinq (5) premiers exercices pour les sociétés industrielles exerçant des activités fixées par voie réglementaire (Article 7 de la loi de finances n° 43-10), sans disposition générale applicable à toutes les startups.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t2">T2</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q06</td>
+          <td style="max-width:200px">Mon entreprise vend uniquement à des clients étrangers. Est-ce qu'elle bénéficie d'av…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">oui</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+<td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">18.06s</td>
+          <td class="response-cell" title="Oui, conformément à l'article 92-I-1° du CGI, les produits livrés et prestations de services rendus à l'exportation par les assujettis sont exonérés de la TVA avec bénéfice du droit à déduction, sous réserve de justification de l'exportation par les documents prévus (titres de transport, récépissés de douane, facture au nom du client étranger, règlement en devises visé, etc.).">Oui, conformément à l'article 92-I-1° du CGI, les produits livrés et prestations de services rendus à l'exportation par les assujettis sont exonérés de la TVA avec bénéfice du droit à déduction, sous réserve de justification de l'exportation par les documents prévus (titres de transport, récépissés de douane, facture au nom du client étranger, règlement en devises visé, etc.).</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t2">T2</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q07</td>
+          <td style="max-width:200px">Une entreprise peut-elle déduire la TVA sur l'achat d'un véhicule de tourisme destiné…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">non</td>
+          <td><span class="badge fail">✗</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge fail">✗ non</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">18.518s</td>
+          <td class="response-cell" title="Information non présente dans les documents.">Information non présente dans les documents.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t2">T2</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q08</td>
+          <td style="max-width:200px">Une société étrangère qui a une succursale au Maroc doit-elle payer l'IS sur les béné…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">oui</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">19.321s</td>
+          <td class="response-cell" title="Oui. Conformément à l'article 5-II du CGI, les sociétés non résidentes sont imposables au Maroc à raison des produits bruts perçus pour des travaux exécutés ou services rendus au Maroc, et l'article 7 de la loi de finances n° 43-10 pour 2011 précise que la succursale est imposée à l'IS comme une société de droit marocain.">Oui. Conformément à l'article 5-II du CGI, les sociétés non résidentes sont imposables au Maroc à raison des produits bruts perçus pour des travaux exécutés ou services rendus au Maroc, et l'article 7 de la loi de finances n° 43-10 pour 2011 précise que la succursale est imposée à l'IS comme une société de droit marocain.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t2">T2</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q09</td>
+          <td style="max-width:200px">À partir de quel montant de bénéfice net une société est-elle soumise au taux IS de 3…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">100 000 000</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+<td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">16.421s</td>
+          <td class="response-cell" title="Une société est soumise au taux d'IS de 35% lorsque son bénéfice net est égal ou supérieur à 100 000 000 de dirhams, conformément à l'article 6 (I-B) de la loi de finances n° 50-22.">Une société est soumise au taux d'IS de 35% lorsque son bénéfice net est égal ou supérieur à 100 000 000 de dirhams, conformément à l'article 6 (I-B) de la loi de finances n° 50-22.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t2">T2</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q10</td>
+          <td style="max-width:200px">Quelle est la tranche du revenu exonérée dans le barème de l'impôt sur le revenu 2026…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">40 000</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">14.923s</td>
+          <td class="response-cell" title="La tranche du revenu allant jusqu'à 40 000 dirhams est exonérée, conformément à l'article 73-I du Code Général des Impôts.">La tranche du revenu allant jusqu'à 40 000 dirhams est exonérée, conformément à l'article 73-I du Code Général des Impôts.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t2">T2</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q11</td>
+          <td style="max-width:200px">Quel est l'abattement forfaitaire applicable aux pensions de retraite pour la part an…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">70%</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+<td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">17.231s</td>
+          <td class="response-cell" title="70% sur le montant ne dépassant pas 168 000 dirhams, conformément à l'article 6 de la loi de finances n° 100-14 pour l'année budgétaire 2015.">70% sur le montant ne dépassant pas 168 000 dirhams, conformément à l'article 6 de la loi de finances n° 100-14 pour l'année budgétaire 2015.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t3">T3</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q12</td>
+          <td style="max-width:200px">Quel est le seuil de chiffre d'affaires consolidé à partir duquel une entreprise doit…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">8 122 500 000</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+<td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">15.364s</td>
+          <td class="response-cell" title="8.122.500.000 dirhams de chiffre d'affaires annuel hors taxes consolidé, conformément à l'article 6 de la loi de finances n° 70-19.">8.122.500.000 dirhams de chiffre d'affaires annuel hors taxes consolidé, conformément à l'article 6 de la loi de finances n° 70-19.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t2">T2</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q13</td>
+          <td style="max-width:200px">Quel est le taux d'imposition des profits nets de cession d'actions cotées en bourse …</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">15%</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">16.203s</td>
+          <td class="response-cell" title="Le taux d'imposition est de 15% conformément à l'article 73 (II-C-1°-a) du CGI, pour les profits nets résultant des cessions d'actions cotées en bourse par une personne physique.">Le taux d'imposition est de 15% conformément à l'article 73 (II-C-1°-a) du CGI, pour les profits nets résultant des cessions d'actions cotées en bourse par une personne physique.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t2">T2</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q14</td>
+          <td style="max-width:200px">Une entreprise peut-elle déduire de son résultat fiscal une amende pour infraction à …</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">non</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">13.653s</td>
+          <td class="response-cell" title="Non. Conformément à l'article 11-I du CGI, les amendes, pénalités et majorations de toute nature mises à la charge des entreprises pour infractions à la législation du travail ne sont pas déductibles du résultat fiscal.">Non. Conformément à l'article 11-I du CGI, les amendes, pénalités et majorations de toute nature mises à la charge des entreprises pour infractions à la législation du travail ne sont pas déductibles du résultat fiscal.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t2">T2</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q15</td>
+          <td style="max-width:200px">Une société peut-elle reporter indéfiniment un déficit fiscal sur les exercices suiva…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">non</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">14.907s</td>
+          <td class="response-cell" title="Non, le déficit ne peut être reporté que jusqu'au quatrième exercice qui suit l'exercice déficitaire, conformément à l'article 12 du CGI.">Non, le déficit ne peut être reporté que jusqu'au quatrième exercice qui suit l'exercice déficitaire, conformément à l'article 12 du CGI.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t3">T3</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q16</td>
+          <td style="max-width:200px">Une société installée dans une Zone d'Accélération Industrielle est-elle soumise au t…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">non</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+<td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">16.017s</td>
+          <td class="response-cell" title="Non, les sociétés exerçant leurs activités dans les zones d'accélération industrielle sont expressément exclues du taux de 35% conformément à l'article 6 (I-B-2°) de la loi de finances n° 50-22 pour l'année budgétaire 2023.">Non, les sociétés exerçant leurs activités dans les zones d'accélération industrielle sont expressément exclues du taux de 35% conformément à l'article 6 (I-B-2°) de la loi de finances n° 50-22 pour l'année budgétaire 2023.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t3">T3</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q17</td>
+          <td style="max-width:200px">Les dividendes versés entre sociétés marocaines sont-ils toujours soumis à la retenue…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">non</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">20.22s</td>
+          <td class="response-cell" title="Non. Les dividendes versés par des sociétés soumises ou exonérées de l'IS à des sociétés ayant leur siège social au Maroc et soumises à l'IS sont exonérés de la retenue à la source, sous réserve de la fourniture d'une attestation de propriété de titres comportant le numéro d'identification à l'IS (Article 6 de la loi de finances n° 55-23, CGI 2026).">Non. Les dividendes versés par des sociétés soumises ou exonérées de l'IS à des sociétés ayant leur siège social au Maroc et soumises à l'IS sont exonérés de la retenue à la source, sous réserve de la fourniture d'une attestation de propriété de titres comportant le numéro d'identification à l'IS (Article 6 de la loi de finances n° 55-23, CGI 2026).</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t3">T3</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q18</td>
+          <td style="max-width:200px">Un promoteur immobilier peut-il bénéficier d'une exonération de TVA sur les logements…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">50 et 80 m²</td>
+          <td><span class="badge fail">✗</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">0.0%</td>
+          <td><span class="badge fail">✗ non</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">27.955s</td>
+          <td class="response-cell" title="N/A">N/A</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t3">T3</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q19</td>
+          <td style="max-width:200px">Quelles sont les conditions cumulatives pour qu'une société bénéficie de l'exclusion …</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">1er janvier 2023</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+<td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">19.891s</td>
+          <td class="response-cell" title="Les conditions cumulatives prévues à l'article 6 (I-B-3°) de la loi de finances n° 50-22 sont : être une société constituée à compter du 1er janvier 2023 (à l'exception des établissements et entreprises publics et leurs filiales), s'engager par convention signée avec l'Etat à investir au moins 1 500 000 000 dirhams en immobilisations corporelles sur une période de cinq ans à compter de la date de signature, et conserver ces immobilisations pendant au moins dix ans à compter de leur date d'acquisition.">Les conditions cumulatives prévues à l'article 6 (I-B-3°) de la loi de finances n° 50-22 sont : être une société constituée à compter du 1er janvier 2023 (à l'exception des établissements et entreprises publics et leurs filiales), s'engager par convention signée avec l'Etat à investir au moins 1 500 000 000 dirhams en immobilisations corporelles sur une période de cinq ans à compter de la date de signature, et conserver ces immobilisations pendant au moins dix ans à compter de leur date d'acquisition.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t3">T3</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q20</td>
+          <td style="max-width:200px">Une coopérative agricole qui transforme les matières premières de ses adhérents et ré…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">oui</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+<td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">16.962s</td>
+          <td class="response-cell" title="Oui, exonérée d'IS car le CA de 8 millions DH HT est inférieur au seuil de 10.000.000 DH HT prévu pour les coopératives exerçant une activité de transformation de matières premières collectées auprès de leurs adhérents, conformément à l'article 8 de la loi de finances n° 68-17 pour l'année budgétaire 2018.">Oui, exonérée d'IS car le CA de 8 millions DH HT est inférieur au seuil de 10.000.000 DH HT prévu pour les coopératives exerçant une activité de transformation de matières premières collectées auprès de leurs adhérents, conformément à l'article 8 de la loi de finances n° 68-17 pour l'année budgétaire 2018.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t3">T3</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q21</td>
+          <td style="max-width:200px">Les dividendes versés par une société en Zone d'Accélération Industrielle à un non-ré…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">oui</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+<td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">19.067s</td>
+          <td class="response-cell" title="Oui, les dividendes de source étrangère versés par une société installée en zone d'accélération industrielle à un non-résident sont exonérés de retenue à la source, conformément à l'article 68-III du CGI.">Oui, les dividendes de source étrangère versés par une société installée en zone d'accélération industrielle à un non-résident sont exonérés de retenue à la source, conformément à l'article 68-III du CGI.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t2">T2</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q22</td>
+          <td style="max-width:200px">Dans quel délai l'administration fiscale peut-elle rectifier une omission dans une dé…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">quatrième année</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+<td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">24.989s</td>
+          <td class="response-cell" title="L'administration peut rectifier une omission dans une déclaration IS jusqu'au 31 décembre de la quatrième année suivant la date du dépôt de la déclaration, conformément à l'article 8 de la loi de finances n° 38-07 pour l'année budgétaire 2008.">L'administration peut rectifier une omission dans une déclaration IS jusqu'au 31 décembre de la quatrième année suivant la date du dépôt de la déclaration, conformément à l'article 8 de la loi de finances n° 38-07 pour l'année budgétaire 2008.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t2">T2</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q23</td>
+          <td style="max-width:200px">Quel est le délai dont dispose un contribuable pour contester un impôt mis en recouvr…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">six mois</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">16.459s</td>
+          <td class="response-cell" title="Le délai est de six (6) mois suivant la date de mise en recouvrement du rôle, conformément à l'article 235 b) du CGI.">Le délai est de six (6) mois suivant la date de mise en recouvrement du rôle, conformément à l'article 235 b) du CGI.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t3">T3</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q24</td>
+          <td style="max-width:200px">Quel est le taux IS applicable à une société dont le bénéfice net est inférieur ou ég…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">20%</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+<td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">16.123s</td>
+          <td class="response-cell" title="Le taux de l'IS applicable à une société dont le bénéfice net est inférieur ou égal à 300 000 dirhams est de 20% au titre de l'exercice ouvert à compter du 1er janvier 2026, conformément à l'article 6 de la loi de finances n° 76-21.">Le taux de l'IS applicable à une société dont le bénéfice net est inférieur ou égal à 300 000 dirhams est de 20% au titre de l'exercice ouvert à compter du 1er janvier 2026, conformément à l'article 6 de la loi de finances n° 76-21.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t2">T2</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q25</td>
+          <td style="max-width:200px">Quel est le délai de dépôt de la déclaration de résultat fiscal IS après la clôture d…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">3 mois</td>
+<td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+<td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">13.256s</td>
+          <td class="response-cell" title="Trois (3) mois suivant la date de clôture de l'exercice comptable, conformément à l'Article 7 de la loi de finances n° 40-08.">Trois (3) mois suivant la date de clôture de l'exercice comptable, conformément à l'Article 7 de la loi de finances n° 40-08.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t3">T3</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q26</td>
+          <td style="max-width:200px">Un contribuable dont le revenu annuel est exactement de 40 000 dirhams paie-t-il de l…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">non</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">15.517s</td>
+          <td class="response-cell" title="Non, un contribuable dont le revenu annuel est exactement de 40 000 dirhams ne paie pas d'IR, car la tranche du revenu allant jusqu'à 40 000 dirhams est exonérée conformément au barème prévu à l'article 73-I du CGI.">Non, un contribuable dont le revenu annuel est exactement de 40 000 dirhams ne paie pas d'IR, car la tranche du revenu allant jusqu'à 40 000 dirhams est exonérée conformément au barème prévu à l'article 73-I du CGI.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t3">T3</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q27</td>
+          <td style="max-width:200px">Le taux IS de 35% s'applique-t-il automatiquement dès qu'une société dépasse 100 mill…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">non</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">23.16s</td>
+          <td class="response-cell" title="Non, le taux de 35% ne s'applique pas automatiquement : il existe des exclusions prévues à l'article 6 (I-B) de la loi de finances n° 50-22, notamment les sociétés « Casablanca Finance City », celles exerçant dans les zones d'accélération industrielle et celles engagées par convention d'investissement d'au moins 1 500 000 000 dirhams.">Non, le taux de 35% ne s'applique pas automatiquement : il existe des exclusions prévues à l'article 6 (I-B) de la loi de finances n° 50-22, notamment les sociétés « Casablanca Finance City », celles exerçant dans les zones d'accélération industrielle et celles engagées par convention d'investissement d'au moins 1 500 000 000 dirhams.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t3">T3</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q28</td>
+          <td style="max-width:200px">Les panneaux photovoltaïques sont-ils exonérés de TVA ?</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">non</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">15.621s</td>
+          <td class="response-cell" title="Non, ce sont les produits et matières entrant dans la fabrication des panneaux photovoltaïques, acquis par les fabricants, qui sont exonérés de TVA conformément à l'article 92-I-54° du CGI, et non les panneaux eux-mêmes.">Non, ce sont les produits et matières entrant dans la fabrication des panneaux photovoltaïques, acquis par les fabricants, qui sont exonérés de TVA conformément à l'article 92-I-54° du CGI, et non les panneaux eux-mêmes.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t2">T2</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q29</td>
+          <td style="max-width:200px">En cas de paiement spontané d'un impôt avec un retard de 20 jours, quelle est la péna…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">5%</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">15.306s</td>
+          <td class="response-cell" title="En cas de paiement spontané avec un retard de 20 jours, la pénalité est ramenée à 5% (au lieu de 10%), conformément à l'article 208 du CGI, à laquelle s'ajoute la majoration de 5% pour le premier mois de retard, soit un total de 10%.">En cas de paiement spontané avec un retard de 20 jours, la pénalité est ramenée à 5% (au lieu de 10%), conformément à l'article 208 du CGI, à laquelle s'ajoute la majoration de 5% pour le premier mois de retard, soit un total de 10%.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t2">T2</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q30</td>
+          <td style="max-width:200px">Un employeur qui n'opère pas la retenue à la source sur les salaires de ses employés,…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">amendes</td>
+<td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">0.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">16.344s</td>
+          <td class="response-cell" title="L'employeur est personnellement redevable des sommes non versées au Trésor, que la retenue ait été ou non effectuée, conformément à l'article 198 du CGI. Ces sommes sont augmentées des pénalités et majorations prévues à l'article 208.">L'employeur est personnellement redevable des sommes non versées au Trésor, que la retenue ait été ou non effectuée, conformément à l'article 198 du CGI. Ces sommes sont augmentées des pénalités et majorations prévues à l'article 208.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t4">T4</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q_hors_01</td>
+          <td style="max-width:200px">Quel est le régime fiscal applicable aux revenus générés par les cryptomonnaies au Ma…</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">non présent</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">16.922s</td>
+          <td class="response-cell" title="Information non présente dans les documents.">Information non présente dans les documents.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t4">T4</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q_hors_02</td>
+          <td style="max-width:200px">Quelle est la TVA applicable aux NFT vendus par des artistes marocains ?</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">non présent</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">20.545s</td>
+          <td class="response-cell" title="Information non présente dans les documents.">Information non présente dans les documents.</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t4">T4</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem;color:var(--accent)">q_hors_03</td>
+          <td style="max-width:200px">Quel est le taux applicable aux dividendes ?</td>
+          <td style="font-family:var(--font-mono);font-size:.7rem">dépend</td>
+          <td><span class="badge ok">✓</span></td>
+          <td style="font-family:var(--font-mono);font-size:.65rem">100.0%</td>
+          <td><span class="badge ok">📎 oui</span></td>
+          <td><span class="badge ok">✓ propre</span></td>
+          
+          <td style="font-family:var(--font-mono);font-size:.65rem">19.225s</td>
+          <td class="response-cell" title="Information non présente dans les documents.">Information non présente dans les documents.</td>
+        </tr></tbody>
+    </table>
+
+  <div class="footer">
+    RAG Eval · run 20260610_122309 · 11/06/2026 01:51
+    &nbsp;·&nbsp; eval: results/eval_20260610_122309.json
+    &nbsp;·&nbsp; RAGAS non disponible pour ce run
+  </div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+# Requirements RAGAS — à ajouter à ton requirements.txt existant
+
+# RAGAS + dépendances
+ragas>=0.1.14
+datasets>=2.14.0
+
+# LangChain Community (pour ChatOllama + HuggingFaceEmbeddings)
+langchain-community>=0.0.38
+langchain-core>=0.1.52
+
+# HuggingFace embeddings (réutilise ton E5-small déjà en cache)
+sentence-transformers>=2.7.0   # déjà installé dans app.py
+
+# ─────────────────────────────────────────
+# Installation :
+#   pip install ragas datasets langchain-community langchain-core
+#
+# sentence-transformers est déjà dans ton env (utilisé par app.py)
+# intfloat/multilingual-e5-small est déjà en cache local
+# minimax-m3:cloud est déjà dans Ollama
+#
+# AUCUN nouveau modèle à télécharger.
+# ─────────────────────────────────────────

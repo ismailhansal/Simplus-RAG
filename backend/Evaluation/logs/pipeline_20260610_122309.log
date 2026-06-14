@@ -1,0 +1,202 @@
+2026-06-10 12:23:09,388 │ INFO    │ =======================================================
+2026-06-10 12:23:09,388 │ INFO    │ RUN 20260610_122309 | 33 questions | doc_id=ALL
+2026-06-10 12:23:09,388 │ INFO    │ =======================================================
+2026-06-10 12:23:09,388 │ INFO    │ ▶ [q01] T1 | Quel est le taux de TVA applicable aux opérations d'hébergement et de resta
+2026-06-10 12:23:25,415 │ INFO    │   LLM    → 14.0s | 170 chars
+2026-06-10 12:23:25,415 │ INFO    │   RESP   → Le taux de TVA applicable aux opérations d'hébergement et de restauration est de 10 % avec droit à déduction, conformément à l'art…
+2026-06-10 12:23:25,416 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:23:25,417 │ INFO    │ ■ [q01] done in 16.029s
+───────────────────────────────────────────────────────
+2026-06-10 12:23:25,918 │ INFO    │ ▶ [q02] T1 | Quel est le taux de l'IS applicable aux établissements de crédit et à Bank 
+2026-06-10 12:23:41,396 │ INFO    │   LLM    → 13.4s | 69 chars
+2026-06-10 12:23:41,396 │ INFO    │   RESP   → 40%, conformément à l'article 6 (I-C) de la loi de finances n° 50-22.
+2026-06-10 12:23:41,397 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:23:41,397 │ INFO    │ ■ [q02] done in 15.479s
+───────────────────────────────────────────────────────
+2026-06-10 12:23:41,899 │ INFO    │ ▶ [q03] T1 | Les agents de l'administration fiscale sont-ils tenus au secret professionn
+2026-06-10 12:23:59,837 │ INFO    │   LLM    → 15.9s | 244 chars
+2026-06-10 12:23:59,837 │ INFO    │   RESP   → Oui. Aux termes de l'article 246-I du CGI, toutes les personnes appelées à intervenir dans l'établissement, le contrôle, la percep…
+2026-06-10 12:23:59,839 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:23:59,840 │ INFO    │ ■ [q03] done in 17.94s
+───────────────────────────────────────────────────────
+2026-06-10 12:24:00,341 │ INFO    │ ▶ [q04] T1 | Quel est le taux de la cotisation minimale pour les ventes de produits pétr
+2026-06-10 12:24:20,617 │ INFO    │   LLM    → 18.2s | 311 chars
+2026-06-10 12:24:20,618 │ INFO    │   RESP   → Le taux de la cotisation minimale pour les ventes de produits pétroliers, gaz, beurre, huile, sucre, farine, eau, électricité et m…
+2026-06-10 12:24:20,620 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:24:20,621 │ INFO    │ ■ [q04] done in 20.28s
+───────────────────────────────────────────────────────
+2026-06-10 12:24:21,122 │ INFO    │ ▶ [q05] T2 | Une startup marocaine nouvellement créée est-elle obligée de payer des impô
+2026-06-10 12:24:42,837 │ INFO    │   LLM    → 19.7s | 357 chars
+2026-06-10 12:24:42,838 │ INFO    │   RESP   → Information non présente dans les documents. Le contexte mentionne uniquement une exonération totale de l'impôt sur les sociétés p…
+2026-06-10 12:24:42,839 │ INFO    │   SCORE  → EM=False Recall=0.0 Art=False Hall=False KW=0.0
+2026-06-10 12:24:42,839 │ INFO    │ ■ [q05] done in 21.717s
+───────────────────────────────────────────────────────
+2026-06-10 12:24:43,341 │ INFO    │ ▶ [q06] T2 | Mon entreprise vend uniquement à des clients étrangers. Est-ce qu'elle béné
+2026-06-10 12:25:03,451 │ INFO    │   LLM    → 18.1s | 379 chars
+2026-06-10 12:25:03,451 │ INFO    │   RESP   → Oui, conformément à l'article 92-I-1° du CGI, les produits livrés et prestations de services rendus à l'exportation par les assuje…
+2026-06-10 12:25:03,453 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:25:03,454 │ INFO    │ ■ [q06] done in 20.114s
+───────────────────────────────────────────────────────
+2026-06-10 12:25:03,957 │ INFO    │ ▶ [q07] T2 | Une entreprise peut-elle déduire la TVA sur l'achat d'un véhicule de touris
+2026-06-10 12:25:24,529 │ INFO    │   LLM    → 18.5s | 44 chars
+2026-06-10 12:25:24,529 │ INFO    │   RESP   → Information non présente dans les documents.
+2026-06-10 12:25:24,530 │ INFO    │   SCORE  → EM=False Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:25:24,531 │ INFO    │ ■ [q07] done in 20.575s
+───────────────────────────────────────────────────────
+2026-06-10 12:25:25,033 │ INFO    │ ▶ [q08] T2 | Une société étrangère qui a une succursale au Maroc doit-elle payer l'IS su
+2026-06-10 12:25:46,398 │ INFO    │   LLM    → 19.3s | 323 chars
+2026-06-10 12:25:46,398 │ INFO    │   RESP   → Oui. Conformément à l'article 5-II du CGI, les sociétés non résidentes sont imposables au Maroc à raison des produits bruts perçus…
+2026-06-10 12:25:46,401 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:25:46,402 │ INFO    │ ■ [q08] done in 21.369s
+───────────────────────────────────────────────────────
+2026-06-10 12:25:46,904 │ INFO    │ ▶ [q09] T2 | À partir de quel montant de bénéfice net une société est-elle soumise au ta
+2026-06-10 12:26:05,382 │ INFO    │   LLM    → 16.4s | 181 chars
+2026-06-10 12:26:05,383 │ INFO    │   RESP   → Une société est soumise au taux d'IS de 35% lorsque son bénéfice net est égal ou supérieur à 100 000 000 de dirhams, conformément …
+2026-06-10 12:26:05,384 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:26:05,385 │ INFO    │ ■ [q09] done in 18.482s
+───────────────────────────────────────────────────────
+2026-06-10 12:26:05,886 │ INFO    │ ▶ [q10] T2 | Quelle est la tranche du revenu exonérée dans le barème de l'impôt sur le r
+2026-06-10 12:26:22,846 │ INFO    │   LLM    → 14.9s | 122 chars
+2026-06-10 12:26:22,846 │ INFO    │   RESP   → La tranche du revenu allant jusqu'à 40 000 dirhams est exonérée, conformément à l'article 73-I du Code Général des Impôts.
+2026-06-10 12:26:22,848 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:26:22,849 │ INFO    │ ■ [q10] done in 16.963s
+───────────────────────────────────────────────────────
+2026-06-10 12:26:23,354 │ INFO    │ ▶ [q11] T2 | Quel est l'abattement forfaitaire applicable aux pensions de retraite pour 
+2026-06-10 12:26:42,739 │ INFO    │   LLM    → 17.2s | 141 chars
+2026-06-10 12:26:42,740 │ INFO    │   RESP   → 70% sur le montant ne dépassant pas 168 000 dirhams, conformément à l'article 6 de la loi de finances n° 100-14 pour l'année budgé…
+2026-06-10 12:26:42,742 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:26:42,743 │ INFO    │ ■ [q11] done in 19.389s
+───────────────────────────────────────────────────────
+2026-06-10 12:26:43,244 │ INFO    │ ▶ [q12] T3 | Quel est le seuil de chiffre d'affaires consolidé à partir duquel une entre
+2026-06-10 12:27:00,647 │ INFO    │   LLM    → 15.4s | 131 chars
+2026-06-10 12:27:00,647 │ INFO    │   RESP   → 8.122.500.000 dirhams de chiffre d'affaires annuel hors taxes consolidé, conformément à l'article 6 de la loi de finances n° 70-19…
+2026-06-10 12:27:00,648 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:27:00,650 │ INFO    │ ■ [q12] done in 17.406s
+───────────────────────────────────────────────────────
+2026-06-10 12:27:01,152 │ INFO    │ ▶ [q13] T2 | Quel est le taux d'imposition des profits nets de cession d'actions cotées 
+2026-06-10 12:27:19,407 │ INFO    │   LLM    → 16.2s | 178 chars
+2026-06-10 12:27:19,407 │ INFO    │   RESP   → Le taux d'imposition est de 15% conformément à l'article 73 (II-C-1°-a) du CGI, pour les profits nets résultant des cessions d'act…
+2026-06-10 12:27:19,408 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:27:19,408 │ INFO    │ ■ [q13] done in 18.256s
+───────────────────────────────────────────────────────
+2026-06-10 12:27:19,910 │ INFO    │ ▶ [q14] T2 | Une entreprise peut-elle déduire de son résultat fiscal une amende pour inf
+2026-06-10 12:27:35,619 │ INFO    │   LLM    → 13.7s | 219 chars
+2026-06-10 12:27:35,620 │ INFO    │   RESP   → Non. Conformément à l'article 11-I du CGI, les amendes, pénalités et majorations de toute nature mises à la charge des entreprises…
+2026-06-10 12:27:35,621 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:27:35,622 │ INFO    │ ■ [q14] done in 15.711s
+───────────────────────────────────────────────────────
+2026-06-10 12:27:36,123 │ INFO    │ ▶ [q15] T2 | Une société peut-elle reporter indéfiniment un déficit fiscal sur les exerc
+2026-06-10 12:27:53,073 │ INFO    │   LLM    → 14.9s | 137 chars
+2026-06-10 12:27:53,074 │ INFO    │   RESP   → Non, le déficit ne peut être reporté que jusqu'au quatrième exercice qui suit l'exercice déficitaire, conformément à l'article 12 …
+2026-06-10 12:27:53,075 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:27:53,075 │ INFO    │ ■ [q15] done in 16.952s
+───────────────────────────────────────────────────────
+2026-06-10 12:27:53,577 │ INFO    │ ▶ [q16] T3 | Une société installée dans une Zone d'Accélération Industrielle est-elle so
+2026-06-10 12:28:11,650 │ INFO    │   LLM    → 16.0s | 223 chars
+2026-06-10 12:28:11,650 │ INFO    │   RESP   → Non, les sociétés exerçant leurs activités dans les zones d'accélération industrielle sont expressément exclues du taux de 35% con…
+2026-06-10 12:28:11,651 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:28:11,651 │ INFO    │ ■ [q16] done in 18.075s
+───────────────────────────────────────────────────────
+2026-06-10 12:28:12,153 │ INFO    │ ▶ [q17] T3 | Les dividendes versés entre sociétés marocaines sont-ils toujours soumis à 
+2026-06-10 12:28:34,420 │ INFO    │   LLM    → 20.2s | 351 chars
+2026-06-10 12:28:34,420 │ INFO    │   RESP   → Non. Les dividendes versés par des sociétés soumises ou exonérées de l'IS à des sociétés ayant leur siège social au Maroc et soumi…
+2026-06-10 12:28:34,421 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:28:34,422 │ INFO    │ ■ [q17] done in 22.268s
+───────────────────────────────────────────────────────
+2026-06-10 12:28:34,923 │ INFO    │ ▶ [q18] T3 | Un promoteur immobilier peut-il bénéficier d'une exonération de TVA sur les
+2026-06-10 12:29:04,936 │ INFO    │   LLM    → 28.0s | 0 chars
+2026-06-10 12:29:04,937 │ INFO    │   RESP   → 
+2026-06-10 12:29:04,940 │ INFO    │   SCORE  → EM=False Recall=0.0 Art=False Hall=False KW=0.0
+2026-06-10 12:29:04,941 │ INFO    │ ■ [q18] done in 30.019s
+───────────────────────────────────────────────────────
+2026-06-10 12:29:05,443 │ INFO    │ ▶ [q19] T3 | Quelles sont les conditions cumulatives pour qu'une société bénéficie de l'
+2026-06-10 12:29:27,379 │ INFO    │   LLM    → 19.9s | 506 chars
+2026-06-10 12:29:27,379 │ INFO    │   RESP   → Les conditions cumulatives prévues à l'article 6 (I-B-3°) de la loi de finances n° 50-22 sont : être une société constituée à comp…
+2026-06-10 12:29:27,382 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:29:27,383 │ INFO    │ ■ [q19] done in 21.941s
+───────────────────────────────────────────────────────
+2026-06-10 12:29:27,885 │ INFO    │ ▶ [q20] T3 | Une coopérative agricole qui transforme les matières premières de ses adhér
+2026-06-10 12:29:46,890 │ INFO    │   LLM    → 17.0s | 307 chars
+2026-06-10 12:29:46,890 │ INFO    │   RESP   → Oui, exonérée d'IS car le CA de 8 millions DH HT est inférieur au seuil de 10.000.000 DH HT prévu pour les coopératives exerçant u…
+2026-06-10 12:29:46,891 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:29:46,892 │ INFO    │ ■ [q20] done in 19.007s
+───────────────────────────────────────────────────────
+2026-06-10 12:29:47,394 │ INFO    │ ▶ [q21] T3 | Les dividendes versés par une société en Zone d'Accélération Industrielle à
+2026-06-10 12:30:08,504 │ INFO    │   LLM    → 19.1s | 204 chars
+2026-06-10 12:30:08,505 │ INFO    │   RESP   → Oui, les dividendes de source étrangère versés par une société installée en zone d'accélération industrielle à un non-résident son…
+2026-06-10 12:30:08,506 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:30:08,509 │ INFO    │ ■ [q21] done in 21.115s
+───────────────────────────────────────────────────────
+2026-06-10 12:30:09,012 │ INFO    │ ▶ [q22] T2 | Dans quel délai l'administration fiscale peut-elle rectifier une omission d
+2026-06-10 12:30:36,060 │ INFO    │   LLM    → 25.0s | 243 chars
+2026-06-10 12:30:36,060 │ INFO    │   RESP   → L'administration peut rectifier une omission dans une déclaration IS jusqu'au 31 décembre de la quatrième année suivant la date du…
+2026-06-10 12:30:36,061 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:30:36,062 │ INFO    │ ■ [q22] done in 27.05s
+───────────────────────────────────────────────────────
+2026-06-10 12:30:36,564 │ INFO    │ ▶ [q23] T2 | Quel est le délai dont dispose un contribuable pour contester un impôt mis 
+2026-06-10 12:30:55,059 │ INFO    │   LLM    → 16.5s | 117 chars
+2026-06-10 12:30:55,060 │ INFO    │   RESP   → Le délai est de six (6) mois suivant la date de mise en recouvrement du rôle, conformément à l'article 235 b) du CGI.
+2026-06-10 12:30:55,061 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:30:55,063 │ INFO    │ ■ [q23] done in 18.498s
+───────────────────────────────────────────────────────
+2026-06-10 12:30:55,564 │ INFO    │ ▶ [q24] T3 | Quel est le taux IS applicable à une société dont le bénéfice net est infér
+2026-06-10 12:31:13,740 │ INFO    │   LLM    → 16.1s | 232 chars
+2026-06-10 12:31:13,741 │ INFO    │   RESP   → Le taux de l'IS applicable à une société dont le bénéfice net est inférieur ou égal à 300 000 dirhams est de 20% au titre de l'exe…
+2026-06-10 12:31:13,742 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:31:13,743 │ INFO    │ ■ [q24] done in 18.178s
+───────────────────────────────────────────────────────
+2026-06-10 12:31:14,244 │ INFO    │ ▶ [q25] T2 | Quel est le délai de dépôt de la déclaration de résultat fiscal IS après la
+2026-06-10 12:31:29,526 │ INFO    │   LLM    → 13.3s | 125 chars
+2026-06-10 12:31:29,526 │ INFO    │   RESP   → Trois (3) mois suivant la date de clôture de l'exercice comptable, conformément à l'Article 7 de la loi de finances n° 40-08.
+2026-06-10 12:31:29,526 │ INFO    │   SCORE  → EM=False Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:31:29,526 │ INFO    │ ■ [q25] done in 15.282s
+───────────────────────────────────────────────────────
+2026-06-10 12:31:30,029 │ INFO    │ ▶ [q26] T3 | Un contribuable dont le revenu annuel est exactement de 40 000 dirhams paie
+2026-06-10 12:31:47,590 │ INFO    │   LLM    → 15.5s | 215 chars
+2026-06-10 12:31:47,590 │ INFO    │   RESP   → Non, un contribuable dont le revenu annuel est exactement de 40 000 dirhams ne paie pas d'IR, car la tranche du revenu allant jusq…
+2026-06-10 12:31:47,591 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:31:47,592 │ INFO    │ ■ [q26] done in 17.563s
+───────────────────────────────────────────────────────
+2026-06-10 12:31:48,092 │ INFO    │ ▶ [q27] T3 | Le taux IS de 35% s'applique-t-il automatiquement dès qu'une société dépass
+2026-06-10 12:32:13,285 │ INFO    │   LLM    → 23.2s | 336 chars
+2026-06-10 12:32:13,285 │ INFO    │   RESP   → Non, le taux de 35% ne s'applique pas automatiquement : il existe des exclusions prévues à l'article 6 (I-B) de la loi de finances…
+2026-06-10 12:32:13,286 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:32:13,286 │ INFO    │ ■ [q27] done in 25.194s
+───────────────────────────────────────────────────────
+2026-06-10 12:32:13,788 │ INFO    │ ▶ [q28] T3 | Les panneaux photovoltaïques sont-ils exonérés de TVA ?
+2026-06-10 12:32:31,452 │ INFO    │   LLM    → 15.6s | 220 chars
+2026-06-10 12:32:31,453 │ INFO    │   RESP   → Non, ce sont les produits et matières entrant dans la fabrication des panneaux photovoltaïques, acquis par les fabricants, qui son…
+2026-06-10 12:32:31,454 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:32:31,455 │ INFO    │ ■ [q28] done in 17.667s
+───────────────────────────────────────────────────────
+2026-06-10 12:32:31,956 │ INFO    │ ▶ [q29] T2 | En cas de paiement spontané d'un impôt avec un retard de 20 jours, quelle e
+2026-06-10 12:32:49,316 │ INFO    │   LLM    → 15.3s | 233 chars
+2026-06-10 12:32:49,316 │ INFO    │   RESP   → En cas de paiement spontané avec un retard de 20 jours, la pénalité est ramenée à 5% (au lieu de 10%), conformément à l'article 20…
+2026-06-10 12:32:49,317 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:32:49,317 │ INFO    │ ■ [q29] done in 17.361s
+───────────────────────────────────────────────────────
+2026-06-10 12:32:49,819 │ INFO    │ ▶ [q30] T2 | Un employeur qui n'opère pas la retenue à la source sur les salaires de ses
+2026-06-10 12:33:08,198 │ INFO    │   LLM    → 16.3s | 234 chars
+2026-06-10 12:33:08,198 │ INFO    │   RESP   → L'employeur est personnellement redevable des sommes non versées au Trésor, que la retenue ait été ou non effectuée, conformément …
+2026-06-10 12:33:08,199 │ INFO    │   SCORE  → EM=False Recall=0.0 Art=True Hall=False KW=0.0
+2026-06-10 12:33:08,200 │ INFO    │ ■ [q30] done in 18.381s
+───────────────────────────────────────────────────────
+2026-06-10 12:33:08,702 │ INFO    │ ▶ [q_hors_01] T4 | Quel est le régime fiscal applicable aux revenus générés par les cryptomonn
+2026-06-10 12:33:27,683 │ INFO    │   LLM    → 16.9s | 44 chars
+2026-06-10 12:33:27,683 │ INFO    │   RESP   → Information non présente dans les documents.
+2026-06-10 12:33:27,684 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:33:27,685 │ INFO    │ ■ [q_hors_01] done in 18.983s
+───────────────────────────────────────────────────────
+2026-06-10 12:33:28,186 │ INFO    │ ▶ [q_hors_02] T4 | Quelle est la TVA applicable aux NFT vendus par des artistes marocains ?
+2026-06-10 12:33:50,784 │ INFO    │   LLM    → 20.5s | 44 chars
+2026-06-10 12:33:50,784 │ INFO    │   RESP   → Information non présente dans les documents.
+2026-06-10 12:33:50,785 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:33:50,786 │ INFO    │ ■ [q_hors_02] done in 22.6s
+───────────────────────────────────────────────────────
+2026-06-10 12:33:51,287 │ INFO    │ ▶ [q_hors_03] T4 | Quel est le taux applicable aux dividendes ?
+2026-06-10 12:34:12,551 │ INFO    │   LLM    → 19.2s | 44 chars
+2026-06-10 12:34:12,552 │ INFO    │   RESP   → Information non présente dans les documents.
+2026-06-10 12:34:12,553 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:34:12,554 │ INFO    │ ■ [q_hors_03] done in 21.267s
+───────────────────────────────────────────────────────
+2026-06-10 12:34:13,072 │ INFO    │ 💾 Résultats → C:\Users\ismail\Desktop\Simplus-RAG\backend\evaluation\results\eval_20260610_122309.json

@@ -20,7 +20,7 @@ DEBUG          = os.getenv("DEBUG", "false").lower() == "true"
 
 # Ollama — minimax-m3 (principal)
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-OLLAMA_MODEL    = os.getenv("OLLAMA_MODEL", "minimax-m3:cloud")  # modèle cloud relay via Ollama
+OLLAMA_MODEL    = os.getenv("OLLAMA_MODEL", "minimax-m3:cloud")
 
 # Groq — fallback
 GROQ_API_KEY    = os.getenv("GROQ_API_KEY", "")
@@ -34,7 +34,6 @@ ingestion_status = {}
 # ── LLM helpers ───────────────────────────────────────────────────────────────
 
 def _ollama_available() -> bool:
-    """Vérifie que le serveur Ollama est joignable."""
     try:
         r = http_requests.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=3)
         return r.status_code == 200
@@ -43,7 +42,6 @@ def _ollama_available() -> bool:
 
 
 def _groq_client():
-    """Retourne un client Groq si la clé est définie, sinon None."""
     if not GROQ_API_KEY:
         return None
     try:
@@ -55,13 +53,6 @@ def _groq_client():
 
 def llm_complete(messages: list[dict], max_tokens: int = 800,
                  temperature: float = 0.1) -> str:
-    """
-    Appel LLM non-streaming.
-    1. Essaie Ollama minimax-m3
-    2. Fallback Groq llama-3.1-8b-instant
-    Retourne le texte brut de la réponse.
-    """
-    # ── Ollama ─────────────────────────────────────────────────────────────
     if _ollama_available():
         try:
             payload = {
@@ -84,7 +75,6 @@ def llm_complete(messages: list[dict], max_tokens: int = 800,
         except Exception as e:
             print(f"⚠ Ollama error ({OLLAMA_MODEL}): {e} — bascule sur Groq")
 
-    # ── Groq fallback ──────────────────────────────────────────────────────
     client = _groq_client()
     if client:
         try:
@@ -103,13 +93,6 @@ def llm_complete(messages: list[dict], max_tokens: int = 800,
 
 def llm_stream(messages: list[dict], max_tokens: int = 800,
                temperature: float = 0.1):
-    """
-    Générateur SSE streaming.
-    1. Essaie Ollama (stream=True)
-    2. Fallback Groq (stream=True)
-    Yields: chaînes SSE  "data: {...}\n\n"  puis  "data: [DONE]\n\n"
-    """
-    # ── Ollama streaming ───────────────────────────────────────────────────
     if _ollama_available():
         try:
             payload = {
@@ -145,7 +128,6 @@ def llm_stream(messages: list[dict], max_tokens: int = 800,
         except Exception as e:
             print(f"⚠ Ollama stream error: {e} — bascule sur Groq")
 
-    # ── Groq streaming fallback ────────────────────────────────────────────
     client = _groq_client()
     if client:
         try:
@@ -231,7 +213,6 @@ def embed_passages(texts: list[str]) -> list[list[float]]:
 
 # ── Reranker ───────────────────────────────────────────────────────────────────
 
-
 def rerank(query, chunks, top_k=10):
     pairs  = [(query, c["chunk_text"]) for c in chunks]
     scores = reranker.predict(pairs)
@@ -246,14 +227,12 @@ def rerank(query, chunks, top_k=10):
     return [c for _, c in ranked[:top_k]]
 
 def clean_footnotes(text: str) -> str:
-    # Supprime les blocs de références de lois de finances (notes de bas de page)
     text = re.sub(
         r'(?:\n\s*Article\s+\d+\s+de\s+la\s+loi\s+de\s+finances[^\n]*\n\s*\d+\s*)+',
         '\n',
         text,
         flags=re.IGNORECASE
     )
-    # Supprime les numéros de notes isolés (28, 29, 30...)
     text = re.sub(r'\n\s*\d{1,3}\s*\n', '\n', text)
     return text
 
@@ -382,12 +361,9 @@ def _make_chunk(text, meta, index, section):
 
 def chunk_by_article(pages, meta):
     full = "\n".join(p["text"] for p in pages)
-
-    # Nettoyage bruit pagination AVANT le split
-    full = re.sub(r'\n\s*-\s*\d+\s*-\s*\n', '\n', full)   # supprime "- 81 -"
+    full = re.sub(r'\n\s*-\s*\d+\s*-\s*\n', '\n', full)
     full = re.sub(r'\n{3,}', '\n\n', full)
-    full = clean_footnotes(full)                            # notes de bas de page
-    # normalise sauts de ligne
+    full = clean_footnotes(full)
 
     split_pattern = r'(?=(?:Article|ARTICLE|Art\.)\s*\.?\s*\d{1,4}\b)'
     raw_parts = re.split(split_pattern, full)
@@ -403,16 +379,12 @@ def chunk_by_article(pages, meta):
             continue
         clean_parts.append(part)
 
-    # Merge original — inchangé
     merged = []
     for part in clean_parts:
         is_article = bool(re.match(r'(?:Article|ARTICLE|Art\.)\s*\.?\s*\d+', part.strip()))
-        
         if is_article:
-            # Toujours un chunk indépendant, peu importe la taille
             merged.append(part)
         elif not is_article and merged:
-            # En-tête, titre de chapitre → colle au précédent
             merged[-1] = merged[-1] + "\n" + part
         else:
             merged.append(part)
@@ -588,9 +560,6 @@ def retrieve_chunks(query, doc_filter=None, top_k=15):
         avg_dl       = sum(len(tokenize(c["chunk_text"])) for c in all_chunks) / len(all_chunks)
         corpus_size  = len(all_chunks)
 
-        if DEBUG:
-            print(f"🔤 Query tokens   : {query_tokens}")
-
         scored = []
         for chunk in all_chunks:
             doc_tokens = tokenize(chunk["chunk_text"])
@@ -600,18 +569,6 @@ def retrieve_chunks(query, doc_filter=None, top_k=15):
             scored.append((score, chunk))
         scored.sort(key=lambda x: x[0], reverse=True)
         bm25_top20 = [c for _, c in scored[:20]]
-
-        if DEBUG:
-            print(f"\n{'─'*60}")
-            print(f"📊 BM25 TOP 5 (sur {len(scored)} chunks scorés)")
-            print(f"{'─'*60}")
-            for i, (score, c) in enumerate(scored[:5]):
-                snippet = c['chunk_text'][:150].replace('\n', ' ')
-                print(f"  #{i+1} score={score:.4f} | section=[{c.get('section','?')[:40]}]")
-                print(f"       chunk_id={c.get('chunk_id','?')[:16]}...")
-                print(f"       texte: {snippet}...")
-            # Affiche aussi les tokens qui ont matché
-            print(f"\n  📌 Chunks avec score > 0 : {sum(1 for s, _ in scored if s > 0)}")
 
     vector_top20 = []
     try:
@@ -637,22 +594,10 @@ def retrieve_chunks(query, doc_filter=None, top_k=15):
                 "metadata":   p.get("metadata", {}),
                 "_score":     r.score
             })
-
-        if DEBUG:
-            print(f"\n{'─'*60}")
-            print(f"🧠 VECTOR TOP 5 (cosine similarity)")
-            print(f"{'─'*60}")
-            for i, c in enumerate(vector_top20[:5]):
-                snippet = c['chunk_text'][:150].replace('\n', ' ')
-                print(f"  #{i+1} score={c.get('_score', 0):.4f} | section=[{c.get('section','?')[:40]}]")
-                print(f"       texte: {snippet}...")
-
     except Exception as e:
         print(f"Vector search error: {e}")
 
     if not bm25_top20 and not vector_top20:
-        if DEBUG:
-            print("❌ Aucun résultat ni BM25 ni vector — contexte vide envoyé au LLM")
         return []
     if not vector_top20:
         return bm25_top20[:top_k]
@@ -660,18 +605,7 @@ def retrieve_chunks(query, doc_filter=None, top_k=15):
         return vector_top20[:top_k]
 
     fused = rrf_fusion(bm25_top20, vector_top20, bm25_weight=1.5)
-
-    if DEBUG:
-        print(f"\n{'─'*60}")
-        print(f"🔀 RRF FUSED TOP {top_k} (bm25_weight=1.5, k=60)")
-        print(f"{'─'*60}")
-        for i, c in enumerate(fused[:top_k]):
-            snippet = c['chunk_text'][:200].replace('\n', ' ')
-            print(f"  #{i+1} section=[{c.get('section','?')[:50]}]")
-            print(f"       texte: {snippet}...")
-        print(f"{'='*60}\n")
-
-    return rerank(query, fused[:30], top_k=top_k)  # reranke les 30 meilleurs
+    return rerank(query, fused[:30], top_k=top_k)
 
 
 # ── Ingestion ──────────────────────────────────────────────────────────────────
@@ -763,6 +697,7 @@ def ingest_status(doc_id):
         return jsonify({"error": "Not found"}), 404
     return jsonify(s)
 
+
 # ── Chat ───────────────────────────────────────────────────────────────────────
 SYSTEM_PROMPT = """Tu es un assistant fiscal marocain. Tu réponds UNIQUEMENT à partir du contexte fourni.
 
@@ -772,15 +707,33 @@ INTERDIT : markdown (**gras**, *italique*, ##titres), listes à puces, reformula
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    data       = request.json
-    query      = data.get("query", "").strip()
-    history    = data.get("history", [])
-    doc_filter = data.get("doc_filter")
+    data        = request.json
+    query       = data.get("query", "").strip()
+    history     = data.get("history", [])
+    doc_filter  = data.get("doc_filter")   # peut être None, dict, ou list de doc_ids
 
     if not query:
         return jsonify({"error": "Empty query"}), 400
 
-    chunks = retrieve_chunks(query, doc_filter, top_k=10)
+    # ── Gestion multi-doc filter ───────────────────────────────────────────
+    # doc_filter peut être:
+    #   None               → tous les docs
+    #   {"doc_id": "xxx"}  → un seul doc (legacy)
+    #   {"doc_ids": [...]} → plusieurs docs sélectionnés
+    qdrant_filter_obj = None
+    bm25_doc_filter   = None
+
+    if isinstance(doc_filter, dict) and "doc_ids" in doc_filter:
+        doc_ids = doc_filter["doc_ids"]
+        if len(doc_ids) == 1:
+            bm25_doc_filter = {"doc_id": doc_ids[0]}
+        elif len(doc_ids) > 1:
+            # Pour BM25 : on filtre après scroll (plus simple)
+            bm25_doc_filter = {"doc_ids": doc_ids}
+    elif isinstance(doc_filter, dict) and "doc_id" in doc_filter:
+        bm25_doc_filter = doc_filter
+
+    chunks = retrieve_chunks_multi(query, bm25_doc_filter, top_k=10)
 
     if not chunks:
         context = "Aucun document indexé ou aucun résultat pertinent trouvé."
@@ -798,29 +751,122 @@ def chat():
         "content": f"CONTEXTE DOCUMENTAIRE :\n{context}\n\nQUESTION : {query}"
     })
 
-    if DEBUG:
-        print(f"\n{'='*60}")
-        print(f"📨 CONTEXTE ENVOYÉ AU LLM ({len(chunks)} chunks)")
-        print(f"{'─'*60}")
-        if chunks:
-            for i, c in enumerate(chunks):
-                print(f"\n  [Chunk #{i+1}] {c['metadata'].get('filename','?')} | {c.get('section','')[:50]}")
-                print(f"  {c['chunk_text'][:300].replace(chr(10), ' ')}...")
+    # Prépare les sources à envoyer dans le premier event SSE
+    sources = []
+    for i, c in enumerate(chunks):
+        sources.append({
+            "rank":     i + 1,
+            "filename": c["metadata"].get("filename", "?"),
+            "type":     c["metadata"].get("type", "?"),
+            "section":  c.get("section", ""),
+            "excerpt":  c["chunk_text"][:400],
+        })
+
+    def stream_with_sources():
+        # Envoie les sources en premier event
+        yield f"data: {json.dumps({'sources': sources})}\n\n"
+        # Puis stream la réponse LLM
+        yield from llm_stream(messages, max_tokens=800, temperature=0.1)
+
+    return Response(
+        stream_with_context(stream_with_sources()),
+        mimetype="text/event-stream",
+        headers={"X-Accel-Buffering": "no", "Cache-Control": "no-cache"}
+    )
+
+
+def retrieve_chunks_multi(query, doc_filter=None, top_k=15):
+    """Comme retrieve_chunks mais supporte doc_filter avec doc_ids (liste)."""
+    search_query = hyde_rewrite(query) if USE_HYDE else query
+
+    all_chunks = []
+    try:
+        # Pour multi-doc : scroll sans filtre puis filtre en Python
+        if isinstance(doc_filter, dict) and "doc_ids" in doc_filter:
+            doc_ids_set = set(doc_filter["doc_ids"])
+            raw_chunks  = get_all_chunks(None)
+            all_chunks  = [c for c in raw_chunks if c["metadata"].get("doc_id") in doc_ids_set]
         else:
-            print("  ⚠️  Contexte vide")
-        print(f"{'='*60}\n")
+            all_chunks = get_all_chunks(doc_filter)
+    except Exception as e:
+        print(f"Scroll error: {e}")
 
-    return Response(
-        stream_with_context(llm_stream(messages, max_tokens=800, temperature=0.1)),
-        mimetype="text/event-stream",
-        headers={"X-Accel-Buffering": "no", "Cache-Control": "no-cache"}
-    )
+    bm25_top20 = []
+    if all_chunks:
+        query_tokens = tokenize(search_query)
+        avg_dl       = sum(len(tokenize(c["chunk_text"])) for c in all_chunks) / len(all_chunks)
+        corpus_size  = len(all_chunks)
+        scored = []
+        for chunk in all_chunks:
+            doc_tokens = tokenize(chunk["chunk_text"])
+            score      = bm25_score(query_tokens, doc_tokens, corpus_size, avg_dl)
+            if search_query.lower() in chunk["chunk_text"].lower():
+                score *= 2.0
+            scored.append((score, chunk))
+        scored.sort(key=lambda x: x[0], reverse=True)
+        bm25_top20 = [c for _, c in scored[:20]]
 
-    return Response(
-        stream_with_context(llm_stream(messages, max_tokens=800, temperature=0.1)),
-        mimetype="text/event-stream",
-        headers={"X-Accel-Buffering": "no", "Cache-Control": "no-cache"}
-    )
+    vector_top20 = []
+    try:
+        # Pour vector search multi-doc : on ne peut pas faire OR natif facilement dans Qdrant
+        # → on récupère top 20 sans filtre puis on filtre
+        query_vec = embed_query(search_query)
+
+        if isinstance(doc_filter, dict) and "doc_ids" in doc_filter:
+            doc_ids_set = set(doc_filter["doc_ids"])
+            results = qdrant.query_points(
+                collection_name=COLLECTION,
+                query=query_vec,
+                limit=50,
+                with_payload=True
+            )
+            for r in results.points:
+                p = r.payload
+                if p.get("metadata", {}).get("doc_id") in doc_ids_set:
+                    vector_top20.append({
+                        "chunk_id":   p.get("chunk_id"),
+                        "chunk_text": p.get("chunk_text", ""),
+                        "section":    p.get("section", ""),
+                        "metadata":   p.get("metadata", {}),
+                        "_score":     r.score
+                    })
+                    if len(vector_top20) >= 20:
+                        break
+        else:
+            qdrant_filter = None
+            if doc_filter and "doc_id" in doc_filter:
+                qdrant_filter = Filter(must=[
+                    FieldCondition(key="metadata.doc_id", match=MatchValue(value=doc_filter["doc_id"]))
+                ])
+            results = qdrant.query_points(
+                collection_name=COLLECTION,
+                query=query_vec,
+                query_filter=qdrant_filter,
+                limit=20,
+                with_payload=True
+            )
+            for r in results.points:
+                p = r.payload
+                vector_top20.append({
+                    "chunk_id":   p.get("chunk_id"),
+                    "chunk_text": p.get("chunk_text", ""),
+                    "section":    p.get("section", ""),
+                    "metadata":   p.get("metadata", {}),
+                    "_score":     r.score
+                })
+    except Exception as e:
+        print(f"Vector search error: {e}")
+
+    if not bm25_top20 and not vector_top20:
+        return []
+    if not vector_top20:
+        return bm25_top20[:top_k]
+    if not bm25_top20:
+        return vector_top20[:top_k]
+
+    fused = rrf_fusion(bm25_top20, vector_top20, bm25_weight=1.5)
+    return rerank(query, fused[:30], top_k=top_k)
+
 
 # ── Documents list ─────────────────────────────────────────────────────────────
 @app.route("/documents", methods=["GET"])
@@ -849,13 +895,43 @@ def list_documents():
                         "exercice":    meta.get("exercice"),
                         "societe":     meta.get("societe"),
                         "description": meta.get("description", ""),
+                        "chunk_count": 0,
                     }
+                if did and did in seen:
+                    seen[did]["chunk_count"] += 1
             if offset is None:
                 break
         return jsonify(list(seen.values()))
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
+# ── Delete document ────────────────────────────────────────────────────────────
+@app.route("/documents/<doc_id>", methods=["DELETE"])
+def delete_document(doc_id):
+    """Supprime tous les chunks d'un document de Qdrant."""
+    try:
+        from qdrant_client.models import FilterSelector
+        qdrant.delete(
+            collection_name=COLLECTION,
+            points_selector=FilterSelector(
+                filter=Filter(must=[
+                    FieldCondition(key="metadata.doc_id", match=MatchValue(value=doc_id))
+                ])
+            )
+        )
+        # Retire aussi de ingestion_status si présent
+        if doc_id in ingestion_status:
+            del ingestion_status[doc_id]
+        count_after = qdrant.count(collection_name=COLLECTION).count
+        print(f"🗑 Document {doc_id} supprimé. Total restant: {count_after} chunks")
+        return jsonify({"success": True, "doc_id": doc_id, "chunks_total": count_after})
+    except Exception as e:
+        print(f"Delete error: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+# ── Health ─────────────────────────────────────────────────────────────────────
 @app.route("/health", methods=["GET"])
 def health():
     ollama_ok = _ollama_available()
@@ -872,6 +948,39 @@ def health():
         })
     except Exception as e:
         return jsonify({"status": "qdrant_offline", "error": str(e)}), 200
+
+
+
+# ── Route /retrieve — à ajouter dans app.py ───────────────────────────────────
+# Colle ce bloc juste avant :  if __name__ == "__main__":
+
+@app.route("/retrieve", methods=["POST"])
+def retrieve():
+    """
+    Endpoint de retrieval pur — utilisé par ragas_eval.py et eval.py.
+    Retourne les chunks sans passer par le LLM.
+
+    Body JSON :
+        query      : str
+        top_k      : int (défaut 10)
+        doc_filter : dict ou None  ex: {"doc_id": "xxx"}
+    """
+    data       = request.json
+    query      = data.get("query", "").strip()
+    top_k      = data.get("top_k", 10)
+    doc_filter = data.get("doc_filter")
+
+    if not query:
+        return jsonify({"error": "Empty query"}), 400
+
+    try:
+        chunks = retrieve_chunks_multi(query, doc_filter, top_k=top_k)
+        return jsonify(chunks)
+    except Exception as e:
+        print(f"Retrieve error: {e}")
+        return jsonify([]), 500
+
+
 
 if __name__ == "__main__":
     app.run(debug=False, port=5000, threaded=True)

@@ -1,0 +1,2 @@
+{"event": "ragas_result", "run_id": "20260611_012957", "question_id": "q01", "faithfulness": 0.0, "answer_relevancy": 0.0, "context_precision": 0.0, "context_recall": 0.0, "ragas_error": "no_chunks", "latency_s": 12.736, "ragas_latency_s": 0.0, "ts": "2026-06-11T01:30:25.759752"}
+{"event": "ragas_result", "run_id": "20260611_012957", "question_id": "q02", "faithfulness": 0.0, "answer_relevancy": 0.0, "context_precision": 0.0, "context_recall": 0.0, "ragas_error": "no_chunks", "latency_s": 14.137, "ragas_latency_s": 0.0, "ts": "2026-06-11T01:30:42.241151"}

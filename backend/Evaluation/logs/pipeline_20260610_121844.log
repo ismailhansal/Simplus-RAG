@@ -1,0 +1,52 @@
+2026-06-10 12:18:44,497 │ INFO    │ =======================================================
+2026-06-10 12:18:44,497 │ INFO    │ RUN 20260610_121844 | 33 questions | doc_id=ALL
+2026-06-10 12:18:44,497 │ INFO    │ =======================================================
+2026-06-10 12:18:44,498 │ INFO    │ ▶ [q01] T1 | Quel est le taux de TVA applicable aux opérations d'hébergement et de resta
+2026-06-10 12:19:07,585 │ INFO    │   LLM    → 21.0s | 150 chars
+2026-06-10 12:19:07,586 │ INFO    │   RESP   → Le taux de TVA applicable aux opérations d'hébergement et de restauration est de 10 % avec droit à déduction, conformément à l'art…
+2026-06-10 12:19:07,588 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:19:07,589 │ INFO    │ ■ [q01] done in 23.09s
+───────────────────────────────────────────────────────
+2026-06-10 12:19:08,090 │ INFO    │ ▶ [q02] T1 | Quel est le taux de l'IS applicable aux établissements de crédit et à Bank 
+2026-06-10 12:19:30,489 │ INFO    │   LLM    → 20.3s | 295 chars
+2026-06-10 12:19:30,489 │ INFO    │   RESP   → Le taux de l'IS applicable aux établissements de crédit, organismes assimilés, Bank Al Maghrib, la Caisse de dépôt et de gestion e…
+2026-06-10 12:19:30,491 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:19:30,491 │ INFO    │ ■ [q02] done in 22.4s
+───────────────────────────────────────────────────────
+2026-06-10 12:19:30,992 │ INFO    │ ▶ [q03] T1 | Les agents de l'administration fiscale sont-ils tenus au secret professionn
+2026-06-10 12:19:45,182 │ INFO    │   LLM    → 12.1s | 235 chars
+2026-06-10 12:19:45,182 │ INFO    │   RESP   → Oui, toutes les personnes intervenant dans l'établissement, le contrôle, la perception ou le contentieux des impôts sont tenues au…
+2026-06-10 12:19:45,182 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:19:45,184 │ INFO    │ ■ [q03] done in 14.192s
+───────────────────────────────────────────────────────
+2026-06-10 12:19:45,685 │ INFO    │ ▶ [q04] T1 | Quel est le taux de la cotisation minimale pour les ventes de produits pétr
+2026-06-10 12:21:23,168 │ INFO    │   LLM    → 95.4s | 81 chars
+2026-06-10 12:21:23,168 │ INFO    │   RESP   → [ERREUR BACKEND] HTTPConnectionPool(host='localhost', port=5000): Read timed out.
+2026-06-10 12:21:23,169 │ INFO    │   SCORE  → EM=False Recall=0.0 Art=False Hall=False KW=0.0
+2026-06-10 12:21:23,171 │ INFO    │ ■ [q04] done in 97.485s
+───────────────────────────────────────────────────────
+2026-06-10 12:21:23,672 │ INFO    │ ▶ [q05] T2 | Une startup marocaine nouvellement créée est-elle obligée de payer des impô
+2026-06-10 12:21:58,769 │ INFO    │   LLM    → 33.1s | 253 chars
+2026-06-10 12:21:58,770 │ INFO    │   RESP   → Information non présente dans les documents. Le contexte fourni mentionne des régimes d'exonération temporaires (ex : 5 ans pour c…
+2026-06-10 12:21:58,772 │ INFO    │   SCORE  → EM=False Recall=0.0 Art=False Hall=False KW=0.0
+2026-06-10 12:21:58,772 │ INFO    │ ■ [q05] done in 35.1s
+───────────────────────────────────────────────────────
+2026-06-10 12:21:59,273 │ INFO    │ ▶ [q06] T2 | Mon entreprise vend uniquement à des clients étrangers. Est-ce qu'elle béné
+2026-06-10 12:22:18,330 │ INFO    │   LLM    → 17.0s | 413 chars
+2026-06-10 12:22:18,330 │ INFO    │   RESP   → Oui, conformément à l'article 92-I-1° du CGI, les produits livrés et prestations de services rendus à l'exportation par les assuje…
+2026-06-10 12:22:18,331 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:22:18,332 │ INFO    │ ■ [q06] done in 19.059s
+───────────────────────────────────────────────────────
+2026-06-10 12:22:18,833 │ INFO    │ ▶ [q07] T2 | Une entreprise peut-elle déduire la TVA sur l'achat d'un véhicule de touris
+2026-06-10 12:22:35,559 │ INFO    │   LLM    → 14.7s | 44 chars
+2026-06-10 12:22:35,562 │ INFO    │   RESP   → Information non présente dans les documents.
+2026-06-10 12:22:35,563 │ INFO    │   SCORE  → EM=False Recall=1.0 Art=False Hall=False KW=0.0
+2026-06-10 12:22:35,563 │ INFO    │ ■ [q07] done in 16.73s
+───────────────────────────────────────────────────────
+2026-06-10 12:22:36,064 │ INFO    │ ▶ [q08] T2 | Une société étrangère qui a une succursale au Maroc doit-elle payer l'IS su
+2026-06-10 12:22:58,845 │ INFO    │   LLM    → 20.7s | 324 chars
+2026-06-10 12:22:58,846 │ INFO    │   RESP   → Oui, conformément à l'article 5-I du CGI, les sociétés ayant ou non un siège au Maroc sont imposables à l'IS sur les produits, bén…
+2026-06-10 12:22:58,847 │ INFO    │   SCORE  → EM=True Recall=1.0 Art=True Hall=False KW=0.0
+2026-06-10 12:22:58,847 │ INFO    │ ■ [q08] done in 22.783s
+───────────────────────────────────────────────────────
+2026-06-10 12:22:59,349 │ INFO    │ ▶ [q09] T2 | À partir de quel montant de bénéfice net une société est-elle soumise au ta

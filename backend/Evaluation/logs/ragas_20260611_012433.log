@@ -1,0 +1,9 @@
+2026-06-11 01:24:33,036 │ INFO    │ =======================================================
+2026-06-11 01:24:33,036 │ INFO    │ RAGAS RUN 20260611_012433 | 4 questions
+2026-06-11 01:24:33,036 │ INFO    │   LLM évaluateur : Ollama minimax-m3:cloud
+2026-06-11 01:24:33,036 │ INFO    │   Embeddings     : intfloat/multilingual-e5-small
+2026-06-11 01:24:33,036 │ INFO    │ =======================================================
+2026-06-11 01:24:33,036 │ INFO    │   Chargement modèles RAGAS...
+2026-06-11 01:24:33,450 │ ERROR   │   Impossible d'initialiser RAGAS : 1 validation error for HuggingFaceEmbeddings
+query_instruction
+  extra fields not permitted (type=value_error.extra)

@@ -1,0 +1,61 @@
+2026-06-11 01:29:57,450 │ INFO    │ =======================================================
+2026-06-11 01:29:57,450 │ INFO    │ RAGAS RUN 20260611_012957 | 4 questions
+2026-06-11 01:29:57,450 │ INFO    │   LLM évaluateur : Ollama minimax-m3:cloud
+2026-06-11 01:29:57,451 │ INFO    │   Embeddings     : intfloat/multilingual-e5-small
+2026-06-11 01:29:57,451 │ INFO    │ =======================================================
+2026-06-11 01:29:57,451 │ INFO    │   Chargement modèles RAGAS...
+2026-06-11 01:30:04,145 │ INFO    │ No device provided, using cpu
+2026-06-11 01:30:04,629 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 01:30:04,629 │ WARNING │ Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-06-11 01:30:04,653 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/modules.json "HTTP/1.1 200 OK"
+2026-06-11 01:30:04,790 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/config_sentence_transformers.json "HTTP/1.1 404 Not Found"
+2026-06-11 01:30:04,794 │ INFO    │ Loading SentenceTransformer model from intfloat/multilingual-e5-small.
+2026-06-11 01:30:04,931 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/config_sentence_transformers.json "HTTP/1.1 404 Not Found"
+2026-06-11 01:30:05,072 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 01:30:05,096 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/README.md "HTTP/1.1 200 OK"
+2026-06-11 01:30:05,237 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 01:30:05,261 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/modules.json "HTTP/1.1 200 OK"
+2026-06-11 01:30:05,402 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/sentence_bert_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 01:30:05,427 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/sentence_bert_config.json "HTTP/1.1 200 OK"
+2026-06-11 01:30:05,566 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/adapter_config.json "HTTP/1.1 404 Not Found"
+2026-06-11 01:30:05,709 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 01:30:05,735 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/config.json "HTTP/1.1 200 OK"
+2026-06-11 01:30:06,053 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-06-11 01:30:06,189 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-06-11 01:30:06,334 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/video_preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-06-11 01:30:06,473 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-06-11 01:30:06,606 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 01:30:06,630 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-06-11 01:30:06,765 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 01:30:06,788 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/config.json "HTTP/1.1 200 OK"
+2026-06-11 01:30:06,931 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 01:30:06,957 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/config.json "HTTP/1.1 200 OK"
+2026-06-11 01:30:07,096 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 01:30:07,120 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-06-11 01:30:07,261 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 01:30:07,285 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-06-11 01:30:07,422 │ INFO    │ HTTP Request: GET https://huggingface.co/api/models/intfloat/multilingual-e5-small/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-06-11 01:30:07,564 │ INFO    │ HTTP Request: GET https://huggingface.co/api/models/intfloat/multilingual-e5-small/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-06-11 01:30:10,016 │ INFO    │ HTTP Request: GET https://huggingface.co/api/models/intfloat/multilingual-e5-small "HTTP/1.1 200 OK"
+2026-06-11 01:30:10,581 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/1_Pooling/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 01:30:10,605 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/1_Pooling%2Fconfig.json "HTTP/1.1 200 OK"
+2026-06-11 01:30:10,794 │ INFO    │ HTTP Request: GET https://huggingface.co/api/models/intfloat/multilingual-e5-small "HTTP/1.1 200 OK"
+2026-06-11 01:30:10,948 │ INFO    │   Modèles RAGAS prêts ✅
+2026-06-11 01:30:10,948 │ INFO    │ ▶ [q01] T1 | Quel est le taux de TVA applicable aux opérations d'hébergement et de 
+2026-06-11 01:30:13,023 │ INFO    │   Retrieve → 0 chunks
+2026-06-11 01:30:25,759 │ INFO    │   LLM     → 12.736s | 151 chars
+2026-06-11 01:30:25,759 │ INFO    │   RAGAS   → calcul en cours...
+2026-06-11 01:30:25,759 │ WARNING │   RAGAS → aucun chunk récupéré, scores = 0
+2026-06-11 01:30:25,759 │ INFO    │   SCORES  → Faith=0.0 Relev=0.0 Prec=0.0 Recall=0.0 (0.0s)
+2026-06-11 01:30:25,759 │ INFO    │ ■ [q01] total=14.81s
+───────────────────────────────────────────────────────
+2026-06-11 01:30:26,061 │ INFO    │ ▶ [q02] T1 | Quel est le taux de l'IS applicable aux établissements de crédit et à 
+2026-06-11 01:30:28,104 │ INFO    │   Retrieve → 0 chunks
+2026-06-11 01:30:42,240 │ INFO    │   LLM     → 14.137s | 169 chars
+2026-06-11 01:30:42,241 │ INFO    │   RAGAS   → calcul en cours...
+2026-06-11 01:30:42,241 │ WARNING │   RAGAS → aucun chunk récupéré, scores = 0
+2026-06-11 01:30:42,241 │ INFO    │   SCORES  → Faith=0.0 Relev=0.0 Prec=0.0 Recall=0.0 (0.0s)
+2026-06-11 01:30:42,241 │ INFO    │ ■ [q02] total=16.18s
+───────────────────────────────────────────────────────
+2026-06-11 01:30:42,542 │ INFO    │ ▶ [q03] T1 | Les agents de l'administration fiscale sont-ils tenus au secret profes
+2026-06-11 01:30:44,581 │ INFO    │   Retrieve → 0 chunks

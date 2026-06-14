@@ -27,6 +27,12 @@ from typing import Optional
 
 from eval_dataset import EVAL_SET
 
+try:
+    from ragas_eval import score_with_ragas, build_ragas_llm, build_ragas_embeddings
+    _RAGAS_AVAILABLE = True
+except ImportError:
+    _RAGAS_AVAILABLE = False
+
 # ══════════════════════════════════════════════════════════════════════════════
 # CONFIG
 # ══════════════════════════════════════════════════════════════════════════════
@@ -370,7 +376,22 @@ def call_retrieve(question: str, doc_id: Optional[str]) -> list:
 
 def run(items: list, doc_id: Optional[str], retrieve_only: bool) -> dict:
     pl      = PipelineLogger()
-    results = []
+
+    results   = []
+    ragas_llm = None
+    ragas_emb = None
+    
+    if _RAGAS_AVAILABLE:
+        log.info("  Initialisation RAGAS (minimax-m3 + E5-small)...")
+        try:
+            ragas_llm = build_ragas_llm()
+            ragas_emb = build_ragas_embeddings()
+            log.info("  RAGAS prêt ✅")
+        except Exception as e:
+            log.warning(f"  RAGAS désactivé : {e}")
+            _RAGAS_AVAILABLE = False
+
+
 
     log.info("=" * 55)
     log.info(f"RUN {RUN_ID} | {len(items)} questions | doc_id={doc_id or 'ALL'}")
@@ -387,6 +408,32 @@ def run(items: list, doc_id: Optional[str], retrieve_only: bool) -> dict:
             pl.bm25(retrieved)
             m = {"keyword_hit_rate": kw_hit, "retrieved_n": len(retrieved)}
             pl.metrics(m)
+
+        if _RAGAS_AVAILABLE and ragas_llm:
+            try:
+                ragas_scores = score_with_ragas(
+                    question         = item["question"],
+                    response         = response,
+                    retrieved_chunks = retrieved,
+                    ground_truth     = item["expected_answer"],
+                    llm              = ragas_llm,
+                    embeddings       = ragas_emb,
+                )
+                m.update(ragas_scores)   # fusionne dans le dict de métriques
+                log.info(
+                    f"  RAGAS  → "
+                    f"Faith={ragas_scores['faithfulness']} "
+                    f"Relev={ragas_scores['answer_relevancy']} "
+                    f"Prec={ragas_scores['context_precision']} "
+                    f"Recall={ragas_scores['context_recall']}"
+                )
+            except Exception as e:
+                log.warning(f"  RAGAS → erreur ignorée : {e}")
+                
+                
+
+                
+            
             results.append({
                 **_base(item),
                 "response": response,
@@ -483,7 +530,12 @@ def _build_summary(results: list) -> dict:
             "article_cited": _rate([r.get("article_cited") for r in sub]),
             "hallucination": _rate([r.get("hallucination_flag") for r in sub]),
             "avg_latency_s": _avg([r.get("latency_s") for r in sub]),
+            "faithfulness":      _avg([r.get("faithfulness")      for r in sub]),
+            "answer_relevancy":  _avg([r.get("answer_relevancy")  for r in sub]),
+            "context_precision": _avg([r.get("context_precision") for r in sub]),
+            "context_recall":    _avg([r.get("context_recall")    for r in sub]),
         }
+        
 
     by_type = {}
     for r in gen:

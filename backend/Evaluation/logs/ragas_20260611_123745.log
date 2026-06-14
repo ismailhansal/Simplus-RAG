@@ -1,0 +1,144 @@
+2026-06-11 12:37:45,156 │ INFO    │ =======================================================
+2026-06-11 12:37:45,156 │ INFO    │ RAGAS RUN 20260611_123745 | 15 questions
+2026-06-11 12:37:45,158 │ INFO    │   LLM évaluateur : Ollama minimax-m3:cloud
+2026-06-11 12:37:45,158 │ INFO    │   Embeddings     : intfloat/multilingual-e5-small
+2026-06-11 12:37:45,158 │ INFO    │ =======================================================
+2026-06-11 12:37:45,159 │ INFO    │   Chargement modèles RAGAS...
+2026-06-11 12:38:06,781 │ INFO    │ No device provided, using cpu
+2026-06-11 12:38:07,340 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 12:38:07,365 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/modules.json "HTTP/1.1 200 OK"
+2026-06-11 12:38:07,511 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/config_sentence_transformers.json "HTTP/1.1 404 Not Found"
+2026-06-11 12:38:07,512 │ WARNING │ Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-06-11 12:38:07,513 │ INFO    │ Loading SentenceTransformer model from intfloat/multilingual-e5-small.
+2026-06-11 12:38:07,646 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/config_sentence_transformers.json "HTTP/1.1 404 Not Found"
+2026-06-11 12:38:07,791 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 12:38:07,815 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/README.md "HTTP/1.1 200 OK"
+2026-06-11 12:38:07,955 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 12:38:07,980 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/modules.json "HTTP/1.1 200 OK"
+2026-06-11 12:38:08,114 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/sentence_bert_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 12:38:08,140 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/sentence_bert_config.json "HTTP/1.1 200 OK"
+2026-06-11 12:38:08,279 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/adapter_config.json "HTTP/1.1 404 Not Found"
+2026-06-11 12:38:08,414 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 12:38:08,439 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/config.json "HTTP/1.1 200 OK"
+2026-06-11 12:38:08,839 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-06-11 12:38:08,989 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-06-11 12:38:09,127 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/video_preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-06-11 12:38:09,268 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-06-11 12:38:09,403 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 12:38:09,428 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-06-11 12:38:09,569 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 12:38:09,594 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/config.json "HTTP/1.1 200 OK"
+2026-06-11 12:38:09,738 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 12:38:09,763 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/config.json "HTTP/1.1 200 OK"
+2026-06-11 12:38:09,899 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 12:38:09,923 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-06-11 12:38:10,071 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 12:38:10,096 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-06-11 12:38:10,241 │ INFO    │ HTTP Request: GET https://huggingface.co/api/models/intfloat/multilingual-e5-small/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-06-11 12:38:10,380 │ INFO    │ HTTP Request: GET https://huggingface.co/api/models/intfloat/multilingual-e5-small/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-06-11 12:38:12,465 │ INFO    │ HTTP Request: GET https://huggingface.co/api/models/intfloat/multilingual-e5-small "HTTP/1.1 200 OK"
+2026-06-11 12:38:12,775 │ INFO    │ HTTP Request: HEAD https://huggingface.co/intfloat/multilingual-e5-small/resolve/main/1_Pooling/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-06-11 12:38:12,799 │ INFO    │ HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/intfloat/multilingual-e5-small/614241f622f53c4eeff9890bdc4f31cfecc418b3/1_Pooling%2Fconfig.json "HTTP/1.1 200 OK"
+2026-06-11 12:38:12,970 │ INFO    │ HTTP Request: GET https://huggingface.co/api/models/intfloat/multilingual-e5-small "HTTP/1.1 200 OK"
+2026-06-11 12:38:13,135 │ INFO    │   Modèles RAGAS prêts ✅
+2026-06-11 12:38:13,136 │ INFO    │ ▶ [q05] T2 | Une startup marocaine nouvellement créée est-elle obligée de payer des
+2026-06-11 12:38:19,435 │ INFO    │   Retrieve → 10 chunks
+2026-06-11 12:38:37,118 │ INFO    │   LLM     → 17.683s | 44 chars
+2026-06-11 12:38:37,118 │ INFO    │   RAGAS   → calcul en cours...
+2026-06-11 12:40:39,840 │ INFO    │   SCORES  → Faith=0.0 Relev=0.0 Prec=0.1625 Recall=0.0 (122.723s)
+2026-06-11 12:40:39,842 │ INFO    │ ■ [q05] total=146.71s
+───────────────────────────────────────────────────────
+2026-06-11 12:40:40,144 │ INFO    │ ▶ [q06] T2 | Mon entreprise vend uniquement à des clients étrangers. Est-ce qu'elle
+2026-06-11 12:40:45,184 │ INFO    │   Retrieve → 10 chunks
+2026-06-11 12:41:00,529 │ INFO    │   LLM     → 15.344s | 313 chars
+2026-06-11 12:41:00,530 │ INFO    │   RAGAS   → calcul en cours...
+2026-06-11 12:43:00,605 │ INFO    │   SCORES  → Faith=1.0 Relev=0.867 Prec=0.5 Recall=1.0 (120.076s)
+2026-06-11 12:43:00,606 │ INFO    │ ■ [q06] total=140.46s
+───────────────────────────────────────────────────────
+2026-06-11 12:43:00,908 │ INFO    │ ▶ [q07] T2 | Une entreprise peut-elle déduire la TVA sur l'achat d'un véhicule de t
+2026-06-11 12:43:06,077 │ INFO    │   Retrieve → 10 chunks
+2026-06-11 12:43:21,848 │ INFO    │   LLM     → 15.771s | 44 chars
+2026-06-11 12:43:21,848 │ INFO    │   RAGAS   → calcul en cours...
+2026-06-11 12:45:06,161 │ INFO    │   SCORES  → Faith=0.0 Relev=0.0 Prec=0.0 Recall=0.0 (104.312s)
+2026-06-11 12:45:06,163 │ INFO    │ ■ [q07] total=125.25s
+───────────────────────────────────────────────────────
+2026-06-11 12:45:06,464 │ INFO    │ ▶ [q08] T2 | Une société étrangère qui a une succursale au Maroc doit-elle payer l'
+2026-06-11 12:45:11,401 │ INFO    │   Retrieve → 10 chunks
+2026-06-11 12:45:31,193 │ INFO    │   LLM     → 19.792s | 347 chars
+2026-06-11 12:45:31,193 │ INFO    │   RAGAS   → calcul en cours...
+2026-06-11 12:47:33,378 │ INFO    │   SCORES  → Faith=0.8 Relev=0.931 Prec=0.4028 Recall=1.0 (122.185s)
+2026-06-11 12:47:33,379 │ INFO    │ ■ [q08] total=146.92s
+───────────────────────────────────────────────────────
+2026-06-11 12:47:33,681 │ INFO    │ ▶ [q09] T2 | À partir de quel montant de bénéfice net une société est-elle soumise 
+2026-06-11 12:47:38,634 │ INFO    │   Retrieve → 10 chunks
+2026-06-11 12:47:52,773 │ INFO    │   LLM     → 14.139s | 210 chars
+2026-06-11 12:47:52,773 │ INFO    │   RAGAS   → calcul en cours...
+2026-06-11 12:49:37,090 │ INFO    │   SCORES  → Faith=1.0 Relev=0.9489 Prec=1.0 Recall=1.0 (104.317s)
+2026-06-11 12:49:37,091 │ INFO    │ ■ [q09] total=123.41s
+───────────────────────────────────────────────────────
+2026-06-11 12:49:37,392 │ INFO    │ ▶ [q10] T2 | Quelle est la tranche du revenu exonérée dans le barème de l'impôt sur
+2026-06-11 12:49:42,317 │ INFO    │   Retrieve → 10 chunks
+2026-06-11 12:49:54,332 │ INFO    │   LLM     → 12.015s | 122 chars
+2026-06-11 12:49:54,332 │ INFO    │   RAGAS   → calcul en cours...
+2026-06-11 12:51:23,075 │ INFO    │   SCORES  → Faith=1.0 Relev=0.8267 Prec=0.3333 Recall=1.0 (88.743s)
+2026-06-11 12:51:23,076 │ INFO    │ ■ [q10] total=105.68s
+───────────────────────────────────────────────────────
+2026-06-11 12:51:23,377 │ INFO    │ ▶ [q11] T2 | Quel est l'abattement forfaitaire applicable aux pensions de retraite 
+2026-06-11 12:51:28,380 │ INFO    │   Retrieve → 10 chunks
+2026-06-11 12:51:51,576 │ INFO    │   LLM     → 23.197s | 190 chars
+2026-06-11 12:51:51,578 │ INFO    │   RAGAS   → calcul en cours...
+2026-06-11 12:53:33,302 │ INFO    │   SCORES  → Faith=0.75 Relev=0.0 Prec=0.9167 Recall=1.0 (101.723s)
+2026-06-11 12:53:33,302 │ INFO    │ ■ [q11] total=129.92s
+───────────────────────────────────────────────────────
+2026-06-11 12:53:33,603 │ INFO    │ ▶ [q13] T2 | Quel est le taux d'imposition des profits nets de cession d'actions co
+2026-06-11 12:53:38,454 │ INFO    │   Retrieve → 10 chunks
+2026-06-11 12:53:51,952 │ INFO    │   LLM     → 13.498s | 169 chars
+2026-06-11 12:53:51,952 │ INFO    │   RAGAS   → calcul en cours...
+2026-06-11 12:55:58,529 │ INFO    │   SCORES  → Faith=1.0 Relev=0.9322 Prec=1.0 Recall=1.0 (126.577s)
+2026-06-11 12:55:58,530 │ INFO    │ ■ [q13] total=144.93s
+───────────────────────────────────────────────────────
+2026-06-11 12:55:58,831 │ INFO    │ ▶ [q14] T2 | Une entreprise peut-elle déduire de son résultat fiscal une amende pou
+2026-06-11 12:56:03,513 │ INFO    │   Retrieve → 10 chunks
+2026-06-11 12:56:16,506 │ INFO    │   LLM     → 12.992s | 169 chars
+2026-06-11 12:56:16,506 │ INFO    │   RAGAS   → calcul en cours...
+2026-06-11 12:57:50,868 │ INFO    │   SCORES  → Faith=0.5 Relev=0.8818 Prec=1.0 Recall=1.0 (94.362s)
+2026-06-11 12:57:50,869 │ INFO    │ ■ [q14] total=112.04s
+───────────────────────────────────────────────────────
+2026-06-11 12:57:51,170 │ INFO    │ ▶ [q15] T2 | Une société peut-elle reporter indéfiniment un déficit fiscal sur les 
+2026-06-11 12:57:56,174 │ INFO    │   Retrieve → 10 chunks
+2026-06-11 12:58:11,511 │ INFO    │   LLM     → 15.337s | 232 chars
+2026-06-11 12:58:11,511 │ INFO    │   RAGAS   → calcul en cours...
+2026-06-11 13:01:20,272 │ ERROR   │ Exception raised in Job[0]: TimeoutError()
+2026-06-11 13:01:20,273 │ ERROR   │ Exception raised in Job[2]: TimeoutError()
+2026-06-11 13:01:22,316 │ INFO    │   SCORES  → Faith=nan Relev=0.9208 Prec=nan Recall=1.0 (190.805s)
+2026-06-11 13:01:22,317 │ INFO    │ ■ [q15] total=211.15s
+───────────────────────────────────────────────────────
+2026-06-11 13:01:22,619 │ INFO    │ ▶ [q22] T2 | Dans quel délai l'administration fiscale peut-elle rectifier une omiss
+2026-06-11 13:01:27,532 │ INFO    │   Retrieve → 10 chunks
+2026-06-11 13:01:39,170 │ INFO    │   LLM     → 11.638s | 44 chars
+2026-06-11 13:01:39,171 │ INFO    │   RAGAS   → calcul en cours...
+2026-06-11 13:03:17,039 │ ERROR   │ Exception raised in Job[2]: ValueError(Ollama call failed with status code 429. Details: <bound method ClientResponse.text of <ClientResponse(http://localhost:11434/api/chat) [429 Too Many Requests]>
+<CIMultiDictProxy('Alt-Svc': 'h3=":443"; ma=2592000', 'Content-Type': 'application/json', 'Date': 'Thu, 11 Jun 2026 12:03:17 GMT', 'Server': 'Google Frontend', 'Set-Cookie': 'aid=9c141620-169c-4300-a448-32197c4ba631; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax', 'Traceparent': '00-a41686e3e9135a8d92d1965b409fcb48-ddeec269f3736dfc-00', 'Via': '1.1 google', 'X-Build-Commit': '0aec43678ba1a1e18820a7ca25679877fb1f0f1b', 'X-Build-Time': '2026-06-10T17:55:55-07:00', 'X-Cloud-Trace-Context': 'a41686e3e9135a8d92d1965b409fcb48/15991933087150992892', 'X-Frame-Options': 'DENY', 'X-Request-Id': '0b4ab7c9-aa4b-45aa-9508-f06c5327a044', 'Transfer-Encoding': 'chunked')>
+>)
+2026-06-11 13:03:26,163 │ ERROR   │ Exception raised in Job[3]: ValueError(Ollama call failed with status code 429. Details: <bound method ClientResponse.text of <ClientResponse(http://localhost:11434/api/chat) [429 Too Many Requests]>
+<CIMultiDictProxy('Alt-Svc': 'h3=":443"; ma=2592000', 'Content-Type': 'application/json', 'Date': 'Thu, 11 Jun 2026 12:03:26 GMT', 'Server': 'Google Frontend', 'Set-Cookie': 'aid=8941301a-3a50-46e7-8509-b78f763c6824; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax', 'Traceparent': '00-e9022097e7ee950dcc32b05d01358901-788480702db15794-00', 'Via': '1.1 google', 'X-Build-Commit': '0aec43678ba1a1e18820a7ca25679877fb1f0f1b', 'X-Build-Time': '2026-06-10T17:55:55-07:00', 'X-Cloud-Trace-Context': 'e9022097e7ee950dcc32b05d01358901/8684207200768448404', 'X-Frame-Options': 'DENY', 'X-Request-Id': '38b5d465-dd63-4ea1-bf04-344f53425b00', 'Transfer-Encoding': 'chunked')>
+>)
+2026-06-11 13:04:14,530 │ ERROR   │ Exception raised in Job[0]: ValueError(Ollama call failed with status code 429. Details: <bound method ClientResponse.text of <ClientResponse(http://localhost:11434/api/chat) [429 Too Many Requests]>
+<CIMultiDictProxy('Alt-Svc': 'h3=":443"; ma=2592000', 'Content-Type': 'application/json', 'Date': 'Thu, 11 Jun 2026 12:04:15 GMT', 'Server': 'Google Frontend', 'Set-Cookie': 'aid=67effdc4-039a-47aa-b34b-6ab0145ca358; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax', 'Traceparent': '00-becbb86d8d77356f1202a178989466d9-279ee3a690afa63e-00', 'Via': '1.1 google', 'X-Build-Commit': '0aec43678ba1a1e18820a7ca25679877fb1f0f1b', 'X-Build-Time': '2026-06-10T17:55:55-07:00', 'X-Cloud-Trace-Context': 'becbb86d8d77356f1202a178989466d9/2854969518330979902', 'X-Frame-Options': 'DENY', 'X-Request-Id': '9f6b4598-ec03-4d7c-a21a-58dd06a714a9', 'Transfer-Encoding': 'chunked')>
+>)
+2026-06-11 13:04:19,593 │ ERROR   │ Exception raised in Job[1]: ValueError(Ollama call failed with status code 429. Details: <bound method ClientResponse.text of <ClientResponse(http://localhost:11434/api/chat) [429 Too Many Requests]>
+<CIMultiDictProxy('Alt-Svc': 'h3=":443"; ma=2592000', 'Content-Type': 'application/json', 'Date': 'Thu, 11 Jun 2026 12:04:20 GMT', 'Server': 'Google Frontend', 'Set-Cookie': 'aid=18824a7e-27da-4485-b629-0ac4db4f6275; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax', 'Traceparent': '00-2afca792d20ff51a1456908a285b3ba1-0e147e21ba427057-00', 'Via': '1.1 google', 'X-Build-Commit': '0aec43678ba1a1e18820a7ca25679877fb1f0f1b', 'X-Build-Time': '2026-06-10T17:55:55-07:00', 'X-Cloud-Trace-Context': '2afca792d20ff51a1456908a285b3ba1/1014574499389141079', 'X-Frame-Options': 'DENY', 'X-Request-Id': '81541d76-b8b5-4099-af18-9c58c2c8be6b', 'Transfer-Encoding': 'chunked')>
+>)
+2026-06-11 13:04:21,578 │ INFO    │   SCORES  → Faith=nan Relev=nan Prec=nan Recall=nan (162.406s)
+2026-06-11 13:04:21,579 │ INFO    │ ■ [q22] total=178.96s
+───────────────────────────────────────────────────────
+2026-06-11 13:04:21,880 │ INFO    │ ▶ [q23] T2 | Quel est le délai dont dispose un contribuable pour contester un impôt
+2026-06-11 13:04:26,533 │ INFO    │   Retrieve → 10 chunks
+2026-06-11 13:04:36,253 │ INFO    │   LLM     → 9.72s | 56 chars
+2026-06-11 13:04:36,253 │ INFO    │   RAGAS   → calcul en cours...
+2026-06-11 13:06:07,386 │ ERROR   │ Exception raised in Job[2]: ValueError(Ollama call failed with status code 429. Details: <bound method ClientResponse.text of <ClientResponse(http://localhost:11434/api/chat) [429 Too Many Requests]>
+<CIMultiDictProxy('Alt-Svc': 'h3=":443"; ma=2592000', 'Content-Type': 'application/json', 'Date': 'Thu, 11 Jun 2026 12:06:07 GMT', 'Server': 'Google Frontend', 'Set-Cookie': 'aid=7290dd44-b8d8-4506-99ba-b669e1703dd4; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax', 'Traceparent': '00-6729246c0fcabad25068aff537fe33aa-886bdfeb07ef354f-00', 'Via': '1.1 google', 'X-Build-Commit': '0aec43678ba1a1e18820a7ca25679877fb1f0f1b', 'X-Build-Time': '2026-06-10T17:55:55-07:00', 'X-Cloud-Trace-Context': '6729246c0fcabad25068aff537fe33aa/9830196812209665359', 'X-Frame-Options': 'DENY', 'X-Request-Id': '32db9372-d861-4c7d-81d4-066907bf06aa', 'Transfer-Encoding': 'chunked')>
+>)
+2026-06-11 13:06:10,924 │ ERROR   │ Exception raised in Job[1]: ValueError(Ollama call failed with status code 429. Details: <bound method ClientResponse.text of <ClientResponse(http://localhost:11434/api/chat) [429 Too Many Requests]>
+<CIMultiDictProxy('Alt-Svc': 'h3=":443"; ma=2592000', 'Content-Type': 'application/json', 'Date': 'Thu, 11 Jun 2026 12:06:11 GMT', 'Server': 'Google Frontend', 'Set-Cookie': 'aid=b3ed3933-2d2f-4b05-b292-1433551ac1a8; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax', 'Traceparent': '00-088032f15e87b1bb8a809782d4b09d46-280e4dd34d67902f-00', 'Via': '1.1 google', 'X-Build-Commit': '0aec43678ba1a1e18820a7ca25679877fb1f0f1b', 'X-Build-Time': '2026-06-10T17:55:55-07:00', 'X-Cloud-Trace-Context': '088032f15e87b1bb8a809782d4b09d46/2886329981123137583', 'X-Frame-Options': 'DENY', 'X-Request-Id': '749ae6b5-6d48-4d30-a3ae-4a75eb4aebb9', 'Transfer-Encoding': 'chunked')>
+>)
